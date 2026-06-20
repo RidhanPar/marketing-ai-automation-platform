@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import plotly.graph_objects as go
 import json
@@ -39,206 +40,73 @@ OBJECTIVE_COLORS = {
 # ---------------------------------------------------------------------------
 
 def inject_css():
-    st.markdown("""
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-}
-#MainMenu, footer, header {visibility: hidden;}
-.block-container {
-    padding: 2.25rem 2.5rem !important;
-    max-width: 1180px !important;
-}
+    st.markdown(
+        '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">',
+        unsafe_allow_html=True,
+    )
 
-/* ── App shell ── */
-.stApp {background: #080808 !important;}
+    css = (
+        "*, *::before, *::after { font-family: 'Inter', -apple-system, sans-serif !important; }"
+        "#MainMenu, footer, header { visibility: hidden; }"
+        ".block-container { padding: 2.25rem 2.5rem !important; max-width: 1180px !important; }"
+        ".stApp { background: #080808 !important; }"
+        "[data-testid='stSidebar'] { background: #040404 !important; border-right: 1px solid rgba(255,255,255,0.05) !important; }"
+        "[data-testid='stSidebar'] .block-container { padding: 1.5rem 1.25rem 1.5rem !important; }"
+        ".stTabs [data-baseweb='tab-list'] { background: transparent !important; border: none !important; border-bottom: 1px solid rgba(255,255,255,0.07) !important; border-radius: 0 !important; padding: 0 !important; gap: 0 !important; margin-bottom: 32px !important; }"
+        ".stTabs [data-baseweb='tab'] { background: transparent !important; border-radius: 0 !important; color: #484848 !important; font-weight: 400 !important; font-size: 0.875rem !important; padding: 12px 0 !important; margin-right: 28px !important; border-bottom: 2px solid transparent !important; margin-bottom: -1px !important; letter-spacing: 0.005em !important; transition: color 0.12s !important; }"
+        ".stTabs [data-baseweb='tab']:hover { color: #999 !important; }"
+        ".stTabs [aria-selected='true'] { background: transparent !important; color: #F0F0F0 !important; font-weight: 600 !important; border-bottom-color: #FF5E2C !important; }"
+        ".stTabs [data-baseweb='tab-highlight'], .stTabs [data-baseweb='tab-border'] { display: none !important; }"
+        ".stTextInput input, .stTextArea textarea { background: #0D0D0D !important; border: 1px solid rgba(255,255,255,0.07) !important; border-radius: 5px !important; color: #EBEBEB !important; font-size: 0.9rem !important; transition: border-color 0.12s !important; caret-color: #FF5E2C !important; }"
+        ".stTextInput input:focus, .stTextArea textarea:focus { border-color: rgba(255,94,44,0.4) !important; box-shadow: 0 0 0 3px rgba(255,94,44,0.07) !important; }"
+        ".stTextInput input::placeholder, .stTextArea textarea::placeholder { color: #2A2A2A !important; }"
+        ".stTextInput label, .stTextArea label { color: #444 !important; font-size: 0.73rem !important; font-weight: 500 !important; letter-spacing: 0.07em !important; text-transform: uppercase !important; }"
+        ".stSelectbox [data-baseweb='select'] > div:first-child { background: #0D0D0D !important; border: 1px solid rgba(255,255,255,0.07) !important; border-radius: 5px !important; transition: border-color 0.12s !important; }"
+        ".stSelectbox [data-baseweb='select'] > div:first-child:hover { border-color: rgba(255,255,255,0.14) !important; }"
+        ".stSelectbox label { color: #444 !important; font-size: 0.73rem !important; font-weight: 500 !important; letter-spacing: 0.07em !important; text-transform: uppercase !important; }"
+        ".stButton > button { border-radius: 5px !important; font-weight: 500 !important; font-size: 0.875rem !important; letter-spacing: 0.01em !important; transition: background 0.12s !important; }"
+        ".stButton > button[kind='primary'] { background: #FF5E2C !important; border: none !important; color: #fff !important; }"
+        ".stButton > button[kind='primary']:hover { background: #E8501E !important; }"
+        ".stButton > button[kind='secondary'] { background: transparent !important; border: 1px solid rgba(255,255,255,0.1) !important; color: #888 !important; }"
+        ".stButton > button[kind='secondary']:hover { border-color: rgba(255,255,255,0.2) !important; color: #ccc !important; }"
+        ".stRadio label span { color: #666 !important; font-size: 0.85rem !important; }"
+        ".stSlider label { color: #444 !important; font-size: 0.73rem !important; font-weight: 500 !important; letter-spacing: 0.07em !important; text-transform: uppercase !important; }"
+        ".stSlider [data-testid='stThumbValue'] { color: #FF5E2C !important; font-weight: 600 !important; }"
+        "[data-testid='stExpander'] { border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 5px !important; background: #0C0C0C !important; margin-bottom: 6px !important; }"
+        "[data-testid='stExpander'] summary { color: #bbb !important; font-weight: 500 !important; font-size: 0.875rem !important; }"
+        "[data-testid='stExpander'] summary:hover { color: #eee !important; }"
+        "[data-testid='stMetric'] { background: transparent !important; border: none !important; padding: 0 !important; }"
+        "[data-testid='stMetricLabel'] p { color: #383838 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; }"
+        "[data-testid='stMetricValue'] { color: #E8E8E8 !important; font-size: 1.45rem !important; font-weight: 700 !important; letter-spacing: -0.02em !important; font-variant-numeric: tabular-nums !important; }"
+        "[data-testid='stDataFrameContainer'] { border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 6px !important; overflow: hidden !important; }"
+        "[data-testid='stFileUploaderDropzone'] { background: #0C0C0C !important; border: 1px dashed rgba(255,255,255,0.1) !important; border-radius: 6px !important; }"
+        "[data-testid='stAlert'] { border-radius: 5px !important; }"
+        "hr { border-color: rgba(255,255,255,0.06) !important; margin: 28px 0 !important; }"
+        "::-webkit-scrollbar { width: 5px; height: 5px; }"
+        "::-webkit-scrollbar-track { background: transparent; }"
+        "::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.09); border-radius: 3px; }"
+        "::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.16); }"
+        ".sec { color: #333; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 14px; display: block; }"
+        ".analysis-text p, .analysis-text li { color: #888; font-size: 0.875rem; line-height: 1.75; }"
+        ".analysis-text strong { color: #C8C8C8; }"
+        ".analysis-text h2, .analysis-text h3 { color: #888; font-size: 0.875rem; font-weight: 600; margin-top: 20px; }"
+    )
 
-/* ── Sidebar ── */
-[data-testid="stSidebar"] {
-    background: #040404 !important;
-    border-right: 1px solid rgba(255,255,255,0.05) !important;
-}
-[data-testid="stSidebar"] .block-container {
-    padding: 1.5rem 1.25rem 1.5rem !important;
-}
-
-/* ── Tabs — underline style ── */
-.stTabs [data-baseweb="tab-list"] {
-    background: transparent !important;
-    border: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.07) !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
-    gap: 0 !important;
-    margin-bottom: 32px !important;
-}
-.stTabs [data-baseweb="tab"] {
-    background: transparent !important;
-    border-radius: 0 !important;
-    color: #484848 !important;
-    font-weight: 400 !important;
-    font-size: 0.875rem !important;
-    padding: 12px 0 12px 0 !important;
-    margin-right: 28px !important;
-    border-bottom: 2px solid transparent !important;
-    margin-bottom: -1px !important;
-    letter-spacing: 0.005em !important;
-    transition: color 0.12s !important;
-}
-.stTabs [data-baseweb="tab"]:hover {color: #999 !important;}
-.stTabs [aria-selected="true"] {
-    background: transparent !important;
-    color: #F0F0F0 !important;
-    font-weight: 600 !important;
-    border-bottom-color: #FF5E2C !important;
-}
-.stTabs [data-baseweb="tab-highlight"],
-.stTabs [data-baseweb="tab-border"] {display: none !important;}
-
-/* ── Inputs ── */
-.stTextInput input, .stTextArea textarea {
-    background: #0D0D0D !important;
-    border: 1px solid rgba(255,255,255,0.07) !important;
-    border-radius: 5px !important;
-    color: #EBEBEB !important;
-    font-size: 0.9rem !important;
-    transition: border-color 0.12s !important;
-    caret-color: #FF5E2C !important;
-}
-.stTextInput input:focus, .stTextArea textarea:focus {
-    border-color: rgba(255, 94, 44, 0.4) !important;
-    box-shadow: 0 0 0 3px rgba(255,94,44,0.07) !important;
-}
-.stTextInput input::placeholder, .stTextArea textarea::placeholder {
-    color: #2A2A2A !important;
-}
-.stTextInput label, .stTextArea label {
-    color: #444 !important;
-    font-size: 0.73rem !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.07em !important;
-    text-transform: uppercase !important;
-}
-
-/* ── Selectbox ── */
-.stSelectbox [data-baseweb="select"] > div:first-child {
-    background: #0D0D0D !important;
-    border: 1px solid rgba(255,255,255,0.07) !important;
-    border-radius: 5px !important;
-    transition: border-color 0.12s !important;
-}
-.stSelectbox [data-baseweb="select"] > div:first-child:hover {
-    border-color: rgba(255,255,255,0.14) !important;
-}
-.stSelectbox label {
-    color: #444 !important;
-    font-size: 0.73rem !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.07em !important;
-    text-transform: uppercase !important;
-}
-
-/* ── Buttons ── */
-.stButton > button {
-    border-radius: 5px !important;
-    font-weight: 500 !important;
-    font-size: 0.875rem !important;
-    letter-spacing: 0.01em !important;
-    transition: background 0.12s, border-color 0.12s !important;
-}
-.stButton > button[kind="primary"] {
-    background: #FF5E2C !important;
-    border: none !important;
-    color: #fff !important;
-}
-.stButton > button[kind="primary"]:hover {background: #E8501E !important;}
-.stButton > button[kind="secondary"] {
-    background: transparent !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
-    color: #888 !important;
-}
-.stButton > button[kind="secondary"]:hover {
-    border-color: rgba(255,255,255,0.2) !important;
-    color: #ccc !important;
-}
-
-/* ── Radio ── */
-.stRadio label span {color: #666 !important; font-size: 0.85rem !important;}
-
-/* ── Slider ── */
-.stSlider label {
-    color: #444 !important; font-size: 0.73rem !important;
-    font-weight: 500 !important; letter-spacing: 0.07em !important;
-    text-transform: uppercase !important;
-}
-.stSlider [data-testid="stThumbValue"] {color: #FF5E2C !important; font-weight: 600 !important;}
-
-/* ── Expander ── */
-[data-testid="stExpander"] {
-    border: 1px solid rgba(255,255,255,0.06) !important;
-    border-radius: 5px !important;
-    background: #0C0C0C !important;
-    margin-bottom: 6px !important;
-}
-[data-testid="stExpander"] summary {
-    color: #bbb !important; font-weight: 500 !important;
-    font-size: 0.875rem !important;
-}
-[data-testid="stExpander"] summary:hover {color: #eee !important;}
-
-/* ── Metrics — stripped down ── */
-[data-testid="stMetric"] {background: transparent !important; border: none !important; padding: 0 !important;}
-[data-testid="stMetricLabel"] p {
-    color: #383838 !important; font-size: 0.68rem !important;
-    font-weight: 600 !important; letter-spacing: 0.1em !important;
-    text-transform: uppercase !important;
-}
-[data-testid="stMetricValue"] {
-    color: #E8E8E8 !important; font-size: 1.45rem !important;
-    font-weight: 700 !important; letter-spacing: -0.02em !important;
-    font-variant-numeric: tabular-nums !important;
-}
-[data-testid="stMetricDelta"] {font-size: 0.75rem !important;}
-
-/* ── Data editor / dataframe ── */
-[data-testid="stDataFrameContainer"] {
-    border: 1px solid rgba(255,255,255,0.06) !important;
-    border-radius: 6px !important; overflow: hidden !important;
-}
-
-/* ── File uploader ── */
-[data-testid="stFileUploaderDropzone"] {
-    background: #0C0C0C !important;
-    border: 1px dashed rgba(255,255,255,0.1) !important;
-    border-radius: 6px !important;
-}
-
-/* ── Alerts ── */
-[data-testid="stAlert"] {border-radius: 5px !important;}
-
-/* ── Divider ── */
-hr {border-color: rgba(255,255,255,0.06) !important; margin: 28px 0 !important;}
-
-/* ── Scrollbar ── */
-::-webkit-scrollbar {width: 5px; height: 5px;}
-::-webkit-scrollbar-track {background: transparent;}
-::-webkit-scrollbar-thumb {background: rgba(255,255,255,0.09); border-radius: 3px;}
-::-webkit-scrollbar-thumb:hover {background: rgba(255,255,255,0.16);}
-
-/* ── Section heading helper ── */
-.sec {
-    color: #333;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin: 0 0 14px;
-    display: block;
-}
-</style>
-""", unsafe_allow_html=True)
+    components.html(
+        f"""<script>
+(function() {{
+    var d = window.parent.document;
+    var id = 'mktai-global-css';
+    if (d.getElementById(id)) return;
+    var s = d.createElement('style');
+    s.id = id;
+    s.textContent = {json.dumps(css)};
+    d.head.appendChild(s);
+}})();
+</script>""",
+        height=0,
+        scrolling=False,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -704,14 +572,6 @@ def render_performance_tab():
             )
         st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 
-        # Inline style for the markdown block
-        st.markdown(
-            "<style>.analysis-text p,.analysis-text li{color:#888;font-size:0.875rem;line-height:1.75;}"
-            ".analysis-text strong{color:#C8C8C8;}"
-            ".analysis-text h2,.analysis-text h3{color:#888;font-size:0.875rem;font-weight:600;"
-            "text-transform:none;letter-spacing:0;margin-top:20px;}</style>",
-            unsafe_allow_html=True,
-        )
         st.markdown(f'<div class="analysis-text">', unsafe_allow_html=True)
         st.markdown(analysis)
         st.markdown('</div>', unsafe_allow_html=True)
