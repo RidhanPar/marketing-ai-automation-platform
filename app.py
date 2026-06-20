@@ -89,10 +89,13 @@ def inject_css():
         ".stSlider label { color: #383838 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; }"
         ".stSlider [data-testid='stThumbValue'] { color: #FF6B3B !important; font-weight: 600 !important; }"
 
-        # Expander
+        # Expander - keep SVG arrow visible, only style text/bg
         "[data-testid='stExpander'] { background: #0B0B0B !important; border: 1px solid #161616 !important; border-radius: 7px !important; margin-bottom: 8px !important; overflow: hidden !important; }"
-        "[data-testid='stExpander'] summary { color: #BDBDBD !important; font-weight: 500 !important; font-size: 0.875rem !important; padding: 12px 16px !important; }"
+        "[data-testid='stExpander'] summary { color: #BDBDBD !important; font-weight: 500 !important; font-size: 0.875rem !important; padding: 12px 16px !important; list-style: none !important; }"
         "[data-testid='stExpander'] summary:hover { color: #E8E8E8 !important; }"
+        "[data-testid='stExpander'] summary svg { display: inline-block !important; vertical-align: middle !important; }"
+        # Hover effect for scored result rows
+        ".score-row:hover { background: #0E0E0E !important; }"
 
         # Metric
         "[data-testid='stMetric'] { background: transparent !important; border: none !important; padding: 0 !important; }"
@@ -656,39 +659,91 @@ def _score_bar_html(label, score, color):
 
 
 def render_ab_scorer_tab():
-    # Scoring legend
-    st.markdown(
-        '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px;">'
-        + "".join([
-            f'<div style="border:1px solid #141414;border-radius:6px;padding:14px 16px;">'
-            f'<div style="color:#1E1E1E;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;margin-bottom:8px;text-transform:uppercase;">{dim}</div>'
-            f'<div style="color:#3A3A3A;font-size:0.78rem;font-weight:600;">{wt}</div>'
-            f'<div style="color:#1E1E1E;font-size:0.72rem;margin-top:4px;">{desc}</div>'
-            f'</div>'
-            for dim, wt, desc in [
-                ("Clarity", "30% weight", "Headline length, body structure, readability"),
-                ("Relevance", "30% weight", "Power words, specificity, benefit language"),
-                ("Urgency", "20% weight", "Time pressure, action triggers, numbers"),
-                ("CTA Strength", "20% weight", "Action verbs, direct calls to action"),
-            ]
-        ])
-        + '</div>',
-        unsafe_allow_html=True,
-    )
+    # Scoring criteria cards
+    criteria = [
+        ("💡", "Clarity", "30%", "Headline length, body structure, readability"),
+        ("🎯", "Relevance", "30%", "Power words, specificity, benefit language"),
+        ("⏱", "Urgency", "20%", "Time pressure, action triggers, numbers"),
+        ("📣", "CTA Strength", "20%", "Action verbs, direct calls to action"),
+    ]
+    crit_cols = st.columns(4, gap="medium")
+    for col, (icon, dim, wt, desc) in zip(crit_cols, criteria):
+        col.markdown(
+            f'<div style="border:1px solid #141414;border-radius:7px;padding:16px 14px;'
+            f'transition:border-color 0.15s;cursor:default;" '
+            f'onmouseover="this.style.borderColor=\'#FF6B3B44\'" '
+            f'onmouseout="this.style.borderColor=\'#141414\'">'
+            f'<div style="font-size:1.1rem;margin-bottom:9px;">{icon}</div>'
+            f'<div style="color:#B8B8B8;font-size:0.84rem;font-weight:600;margin-bottom:3px;">{dim}</div>'
+            f'<div style="color:{ACCENT};font-size:0.67rem;font-weight:700;letter-spacing:0.06em;margin-bottom:6px;">{wt} weight</div>'
+            f'<div style="color:#252525;font-size:0.72rem;line-height:1.5;">{desc}</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
 
+    _sep()
     _eyebrow("Variant Inputs")
-    n = st.slider("Number of variants", min_value=2, max_value=5, value=2, label_visibility="collapsed")
+
+    col_n, _ = st.columns([1, 4])
+    with col_n:
+        n = st.slider("Variants", min_value=2, max_value=5, value=2)
+
     inputs = []
+    VARIANT_COLORS = [ACCENT, "#6366F1", GREEN, AMBER, RED]
+
     for i in range(n):
         lbl = chr(65 + i)
-        with st.expander(f"Variant {lbl}", expanded=(i < 2)):
-            c1, c2 = st.columns(2, gap="medium")
-            with c1:
-                hl = st.text_input("Headline", key=f"hl{i}", placeholder="Save 3 Hours Daily with AI", label_visibility="collapsed")
-                st.markdown('<span style="color:#242424;font-size:0.67rem;">HEADLINE</span>', unsafe_allow_html=True)
-            with c2:
-                bd = st.text_area("Body", key=f"bd{i}", placeholder="Join 10,000 teams who automate their workflow. Start free today.", height=70, label_visibility="collapsed")
-                st.markdown('<span style="color:#242424;font-size:0.67rem;">AD BODY</span>', unsafe_allow_html=True)
+        vc = VARIANT_COLORS[i % len(VARIANT_COLORS)]
+
+        if i > 0:
+            st.markdown('<div style="border-top:1px solid #0F0F0F;margin:20px 0 16px;"></div>', unsafe_allow_html=True)
+
+        # Variant label row
+        st.markdown(
+            f'<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">'
+            f'<div style="width:26px;height:26px;border-radius:5px;background:{vc}18;'
+            f'border:1px solid {vc}30;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
+            f'<span style="color:{vc};font-size:0.7rem;font-weight:700;">{lbl}</span></div>'
+            f'<span style="color:#3A3A3A;font-size:0.8rem;font-weight:500;">Variant {lbl}</span>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+
+        c1, c2 = st.columns([1, 1.4], gap="large")
+        with c1:
+            hl = st.text_input(
+                "Headline",
+                key=f"hl{i}",
+                placeholder="e.g., Save 3 Hours Daily with AI",
+            )
+            hl_len = len(st.session_state.get(f"hl{i}", ""))
+            hl_pct = min(hl_len / 40, 1.0)
+            hl_c = (GREEN if 1 <= hl_len <= 40 else RED if hl_len > 40 else "#181818")
+            st.markdown(
+                f'<div style="display:flex;align-items:center;gap:8px;margin-top:-6px;margin-bottom:4px;">'
+                f'<div style="flex:1;height:2px;background:#111;border-radius:1px;overflow:hidden;">'
+                f'<div style="height:100%;width:{hl_pct*100:.0f}%;background:{hl_c};'
+                f'border-radius:1px;transition:width 0.15s,background 0.15s;"></div></div>'
+                f'<span style="color:{hl_c};font-size:0.66rem;font-variant-numeric:tabular-nums;'
+                f'white-space:nowrap;min-width:32px;text-align:right;">{hl_len}/40</span></div>',
+                unsafe_allow_html=True,
+            )
+        with c2:
+            bd = st.text_area(
+                "Ad Body",
+                key=f"bd{i}",
+                placeholder="e.g., Join 10,000 teams who automate their workflow. Start free today.",
+                height=88,
+            )
+            bd_raw = st.session_state.get(f"bd{i}", "")
+            bd_words = len(bd_raw.split()) if bd_raw.strip() else 0
+            bd_c = (GREEN if bd_words >= 8 else AMBER if bd_words >= 3 else "#181818")
+            st.markdown(
+                f'<span style="color:{bd_c};font-size:0.66rem;margin-top:-6px;'
+                f'display:block;font-variant-numeric:tabular-nums;">{bd_words} words</span>',
+                unsafe_allow_html=True,
+            )
+
         inputs.append({"name": f"Variant {lbl}", "headline": hl, "body": bd})
 
     st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
