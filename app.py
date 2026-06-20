@@ -22,7 +22,7 @@ from constants import (
     TEMPLATE_AD_COPY,
 )
 
-ACCENT = "#FF5E2C"
+ACCENT = "#FF6B3B"
 GREEN  = "#22C55E"
 AMBER  = "#F59E0B"
 RED    = "#EF4444"
@@ -30,13 +30,12 @@ RED    = "#EF4444"
 OBJECTIVE_COLORS = {
     "Awareness":   "#6366F1",
     "Traffic":     "#10B981",
-    "Conversions": "#FF5E2C",
+    "Conversions": "#FF6B3B",
     "Leads":       "#8B5CF6",
 }
 
-
 # ---------------------------------------------------------------------------
-# CSS
+# CSS injection
 # ---------------------------------------------------------------------------
 
 def inject_css():
@@ -46,62 +45,93 @@ def inject_css():
     )
 
     css = (
-        "*, *::before, *::after { font-family: 'Inter', -apple-system, sans-serif !important; }"
+        "*, *::before, *::after { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important; }"
         "#MainMenu, footer, header { visibility: hidden; }"
-        ".block-container { padding: 2.25rem 2.5rem !important; max-width: 1180px !important; }"
+        ".block-container { padding: 2rem 2.5rem 3rem !important; max-width: 1140px !important; }"
+
+        # App shell
         ".stApp { background: #080808 !important; }"
-        "[data-testid='stSidebar'] { background: #040404 !important; border-right: 1px solid rgba(255,255,255,0.05) !important; }"
-        "[data-testid='stSidebar'] .block-container { padding: 1.5rem 1.25rem 1.5rem !important; }"
-        ".stTabs [data-baseweb='tab-list'] { background: transparent !important; border: none !important; border-bottom: 1px solid rgba(255,255,255,0.07) !important; border-radius: 0 !important; padding: 0 !important; gap: 0 !important; margin-bottom: 32px !important; }"
-        ".stTabs [data-baseweb='tab'] { background: transparent !important; border-radius: 0 !important; color: #484848 !important; font-weight: 400 !important; font-size: 0.875rem !important; padding: 12px 0 !important; margin-right: 28px !important; border-bottom: 2px solid transparent !important; margin-bottom: -1px !important; letter-spacing: 0.005em !important; transition: color 0.12s !important; }"
-        ".stTabs [data-baseweb='tab']:hover { color: #999 !important; }"
-        ".stTabs [aria-selected='true'] { background: transparent !important; color: #F0F0F0 !important; font-weight: 600 !important; border-bottom-color: #FF5E2C !important; }"
+
+        # Sidebar
+        "[data-testid='stSidebar'] { background: #040404 !important; border-right: 1px solid #141414 !important; }"
+        "[data-testid='stSidebar'] .block-container { padding: 1.75rem 1.25rem 1.5rem !important; }"
+
+        # Tab bar - underline only, no pill/card
+        ".stTabs [data-baseweb='tab-list'] { background: transparent !important; border: none !important; border-bottom: 1px solid #141414 !important; border-radius: 0 !important; padding: 0 !important; gap: 0 !important; margin-bottom: 40px !important; }"
+        ".stTabs [data-baseweb='tab'] { background: transparent !important; border-radius: 0 !important; color: #3A3A3A !important; font-size: 0.84rem !important; font-weight: 400 !important; padding: 13px 0 !important; margin-right: 30px !important; border-bottom: 2px solid transparent !important; margin-bottom: -1px !important; letter-spacing: 0.01em !important; transition: color 0.12s !important; }"
+        ".stTabs [data-baseweb='tab']:hover { color: #777 !important; }"
+        ".stTabs [aria-selected='true'] { color: #EFEFEF !important; font-weight: 600 !important; border-bottom-color: #FF6B3B !important; background: transparent !important; }"
         ".stTabs [data-baseweb='tab-highlight'], .stTabs [data-baseweb='tab-border'] { display: none !important; }"
-        ".stTextInput input, .stTextArea textarea { background: #0D0D0D !important; border: 1px solid rgba(255,255,255,0.07) !important; border-radius: 5px !important; color: #EBEBEB !important; font-size: 0.9rem !important; transition: border-color 0.12s !important; caret-color: #FF5E2C !important; }"
-        ".stTextInput input:focus, .stTextArea textarea:focus { border-color: rgba(255,94,44,0.4) !important; box-shadow: 0 0 0 3px rgba(255,94,44,0.07) !important; }"
-        ".stTextInput input::placeholder, .stTextArea textarea::placeholder { color: #2A2A2A !important; }"
-        ".stTextInput label, .stTextArea label { color: #444 !important; font-size: 0.73rem !important; font-weight: 500 !important; letter-spacing: 0.07em !important; text-transform: uppercase !important; }"
-        ".stSelectbox [data-baseweb='select'] > div:first-child { background: #0D0D0D !important; border: 1px solid rgba(255,255,255,0.07) !important; border-radius: 5px !important; transition: border-color 0.12s !important; }"
-        ".stSelectbox [data-baseweb='select'] > div:first-child:hover { border-color: rgba(255,255,255,0.14) !important; }"
-        ".stSelectbox label { color: #444 !important; font-size: 0.73rem !important; font-weight: 500 !important; letter-spacing: 0.07em !important; text-transform: uppercase !important; }"
-        ".stButton > button { border-radius: 5px !important; font-weight: 500 !important; font-size: 0.875rem !important; letter-spacing: 0.01em !important; transition: background 0.12s !important; }"
-        ".stButton > button[kind='primary'] { background: #FF5E2C !important; border: none !important; color: #fff !important; }"
-        ".stButton > button[kind='primary']:hover { background: #E8501E !important; }"
-        ".stButton > button[kind='secondary'] { background: transparent !important; border: 1px solid rgba(255,255,255,0.1) !important; color: #888 !important; }"
-        ".stButton > button[kind='secondary']:hover { border-color: rgba(255,255,255,0.2) !important; color: #ccc !important; }"
-        ".stRadio label span { color: #666 !important; font-size: 0.85rem !important; }"
-        ".stSlider label { color: #444 !important; font-size: 0.73rem !important; font-weight: 500 !important; letter-spacing: 0.07em !important; text-transform: uppercase !important; }"
-        ".stSlider [data-testid='stThumbValue'] { color: #FF5E2C !important; font-weight: 600 !important; }"
-        "[data-testid='stExpander'] { border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 5px !important; background: #0C0C0C !important; margin-bottom: 6px !important; }"
-        "[data-testid='stExpander'] summary { color: #bbb !important; font-weight: 500 !important; font-size: 0.875rem !important; }"
-        "[data-testid='stExpander'] summary:hover { color: #eee !important; }"
+
+        # Inputs
+        ".stTextInput input, .stTextArea textarea { background: #0E0E0E !important; border: 1px solid #1C1C1C !important; border-radius: 6px !important; color: #E8E8E8 !important; font-size: 0.875rem !important; caret-color: #FF6B3B !important; transition: border-color 0.12s !important; padding: 9px 12px !important; }"
+        ".stTextInput input:focus, .stTextArea textarea:focus { border-color: rgba(255,107,59,0.5) !important; box-shadow: 0 0 0 3px rgba(255,107,59,0.06) !important; }"
+        ".stTextInput input::placeholder, .stTextArea textarea::placeholder { color: #282828 !important; }"
+        ".stTextInput label, .stTextArea label { color: #383838 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; margin-bottom: 6px !important; }"
+
+        # Selectbox
+        ".stSelectbox [data-baseweb='select'] > div:first-child { background: #0E0E0E !important; border: 1px solid #1C1C1C !important; border-radius: 6px !important; transition: border-color 0.12s !important; }"
+        ".stSelectbox [data-baseweb='select'] > div:first-child:hover { border-color: #2A2A2A !important; }"
+        ".stSelectbox label { color: #383838 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; margin-bottom: 6px !important; }"
+
+        # Buttons
+        ".stButton > button { border-radius: 6px !important; font-size: 0.875rem !important; font-weight: 500 !important; letter-spacing: 0.01em !important; transition: all 0.1s !important; height: 38px !important; }"
+        ".stButton > button[kind='primary'] { background: #FF6B3B !important; border: none !important; color: #fff !important; }"
+        ".stButton > button[kind='primary']:hover { background: #E85A2A !important; }"
+        ".stButton > button[kind='secondary'] { background: transparent !important; border: 1px solid #1C1C1C !important; color: #555 !important; }"
+        ".stButton > button[kind='secondary']:hover { border-color: #2A2A2A !important; color: #888 !important; }"
+
+        # Radio
+        ".stRadio label span { color: #555 !important; font-size: 0.84rem !important; }"
+        ".stRadio > div { gap: 4px !important; }"
+
+        # Slider
+        ".stSlider label { color: #383838 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; }"
+        ".stSlider [data-testid='stThumbValue'] { color: #FF6B3B !important; font-weight: 600 !important; }"
+
+        # Expander
+        "[data-testid='stExpander'] { background: #0B0B0B !important; border: 1px solid #161616 !important; border-radius: 7px !important; margin-bottom: 8px !important; overflow: hidden !important; }"
+        "[data-testid='stExpander'] summary { color: #BDBDBD !important; font-weight: 500 !important; font-size: 0.875rem !important; padding: 12px 16px !important; }"
+        "[data-testid='stExpander'] summary:hover { color: #E8E8E8 !important; }"
+
+        # Metric
         "[data-testid='stMetric'] { background: transparent !important; border: none !important; padding: 0 !important; }"
-        "[data-testid='stMetricLabel'] p { color: #383838 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; }"
-        "[data-testid='stMetricValue'] { color: #E8E8E8 !important; font-size: 1.45rem !important; font-weight: 700 !important; letter-spacing: -0.02em !important; font-variant-numeric: tabular-nums !important; }"
-        "[data-testid='stDataFrameContainer'] { border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 6px !important; overflow: hidden !important; }"
-        "[data-testid='stFileUploaderDropzone'] { background: #0C0C0C !important; border: 1px dashed rgba(255,255,255,0.1) !important; border-radius: 6px !important; }"
-        "[data-testid='stAlert'] { border-radius: 5px !important; }"
-        "hr { border-color: rgba(255,255,255,0.06) !important; margin: 28px 0 !important; }"
-        "::-webkit-scrollbar { width: 5px; height: 5px; }"
+        "[data-testid='stMetricLabel'] p { color: #323232 !important; font-size: 0.67rem !important; font-weight: 600 !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; }"
+        "[data-testid='stMetricValue'] { color: #E2E2E2 !important; font-size: 1.5rem !important; font-weight: 700 !important; letter-spacing: -0.025em !important; font-variant-numeric: tabular-nums !important; }"
+
+        # DataFrame
+        "[data-testid='stDataFrameContainer'] { border: 1px solid #161616 !important; border-radius: 7px !important; overflow: hidden !important; }"
+
+        # File uploader
+        "[data-testid='stFileUploaderDropzone'] { background: #0B0B0B !important; border: 1px dashed #1C1C1C !important; border-radius: 7px !important; }"
+
+        # Alerts
+        "[data-testid='stAlert'] { border-radius: 6px !important; }"
+
+        # Divider
+        "hr { border-color: #141414 !important; margin: 32px 0 !important; }"
+
+        # Scrollbars
+        "::-webkit-scrollbar { width: 4px; height: 4px; }"
         "::-webkit-scrollbar-track { background: transparent; }"
-        "::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.09); border-radius: 3px; }"
-        "::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.16); }"
-        ".sec { color: #333; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 14px; display: block; }"
-        ".analysis-text p, .analysis-text li { color: #888; font-size: 0.875rem; line-height: 1.75; }"
-        ".analysis-text strong { color: #C8C8C8; }"
-        ".analysis-text h2, .analysis-text h3 { color: #888; font-size: 0.875rem; font-weight: 600; margin-top: 20px; }"
+        "::-webkit-scrollbar-thumb { background: #1E1E1E; border-radius: 3px; }"
+        "::-webkit-scrollbar-thumb:hover { background: #2A2A2A; }"
+
+        # Custom utility classes used below
+        ".eyebrow { display: block; color: #2E2E2E; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; }"
+        ".analysis-out p, .analysis-out li { color: #777; font-size: 0.875rem; line-height: 1.8; margin: 0 0 4px; }"
+        ".analysis-out strong { color: #C8C8C8; }"
+        ".analysis-out h2, .analysis-out h3 { color: #555; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin: 22px 0 10px; }"
     )
 
     components.html(
         f"""<script>
-(function() {{
-    var d = window.parent.document;
-    var id = 'mktai-global-css';
-    if (d.getElementById(id)) return;
-    var s = d.createElement('style');
-    s.id = id;
-    s.textContent = {json.dumps(css)};
-    d.head.appendChild(s);
+(function(){{
+  var d=window.parent.document, id='mktai-v3';
+  if(d.getElementById(id))return;
+  var s=d.createElement('style'); s.id=id;
+  s.textContent={json.dumps(css)};
+  d.head.appendChild(s);
 }})();
 </script>""",
         height=0,
@@ -130,169 +160,197 @@ def get_anthropic_client():
     return None
 
 
-def _label(text):
-    return f'<span class="sec">{text}</span>'
+def _eyebrow(text):
+    st.markdown(f'<span class="eyebrow">{text}</span>', unsafe_allow_html=True)
 
 
-def _thin_rule():
-    return '<div style="height:1px;background:rgba(255,255,255,0.06);margin:28px 0;"></div>'
+def _sep(color="#141414"):
+    st.markdown(f'<hr style="border-color:{color};margin:28px 0;">', unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
-# TAB 1 — Ad Copy Generator
+# TAB 1 - Ad Copy Generator
 # ---------------------------------------------------------------------------
 
 def _call_ai_for_ad_copy(client, product, audience, objective, tone, usp):
-    prompt = (
-        f"You are an expert digital marketing copywriter. Generate 3 distinct ad copy variants.\n\n"
-        f"Product/Service: {product}\n"
-        f"Target Audience: {audience}\n"
-        f"Campaign Objective: {objective}\n"
-        f"Tone: {tone}\n"
-        f"Key Selling Point: {usp}\n\n"
-        f"Return ONLY a valid JSON array of 3 objects with keys: headline (max 40 chars), "
-        f"primary_text (max 125 chars), cta (2-4 words), rationale (one sentence). "
-        f"Each variant takes a meaningfully different creative angle. No em dashes."
-    )
     msg = client.messages.create(
         model="claude-haiku-4-5",
         max_tokens=1024,
-        messages=[{"role": "user", "content": prompt}],
+        messages=[{
+            "role": "user",
+            "content": (
+                f"You are an expert digital marketing copywriter. Generate 3 distinct ad copy variants.\n\n"
+                f"Product: {product}\nAudience: {audience}\nObjective: {objective}\nTone: {tone}\nUSP: {usp}\n\n"
+                f"Return ONLY a JSON array of 3 objects with keys: headline (max 40 chars), "
+                f"primary_text (max 125 chars), cta (2-4 words), rationale (1 sentence). No em dashes."
+            ),
+        }],
     )
     text = msg.content[0].text
-    match = re.search(r"\[.*\]", text, re.DOTALL)
-    if match:
-        return json.loads(match.group())[:3]
-    return None
+    m = re.search(r"\[.*\]", text, re.DOTALL)
+    return json.loads(m.group())[:3] if m else None
 
 
 def _template_ad_copy(product, audience, objective, tone, usp):
-    mods = {
+    tone_map = {
         "Professional": ["industry-leading", "enterprise-grade", "proven"],
-        "Casual":       ["super easy", "you will love", "pretty amazing"],
-        "Urgent":       ["today only", "right now", "before it is gone"],
-        "Inspirational":["transform", "elevate", "unlock your potential with"],
-    }.get(tone, ["trusted", "powerful", "effective"])
-    variants = []
+        "Casual": ["super easy", "you will love", "pretty amazing"],
+        "Urgent": ["today only", "right now", "before it is gone"],
+        "Inspirational": ["transform", "elevate", "unlock your potential with"],
+    }
+    mods = tone_map.get(tone, ["trusted", "powerful", "effective"])
+    out = []
     for i, tmpl in enumerate(TEMPLATE_AD_COPY[objective][:3]):
-        mod = mods[i % len(mods)]
-        variants.append({
-            "headline":     tmpl["headline"].format(product=product[:18], modifier=mod, usp=usp[:20])[:40],
-            "primary_text": tmpl["primary_text"].format(product=product, audience=audience, usp=usp, modifier=mod)[:125],
-            "cta":          tmpl["cta"],
-            "rationale":    tmpl["rationale"].format(objective=objective, tone=tone),
+        m = mods[i % len(mods)]
+        out.append({
+            "headline": tmpl["headline"].format(product=product[:18], modifier=m, usp=usp[:20])[:40],
+            "primary_text": tmpl["primary_text"].format(product=product, audience=audience, usp=usp, modifier=m)[:125],
+            "cta": tmpl["cta"],
+            "rationale": tmpl["rationale"].format(objective=objective, tone=tone),
         })
-    return variants
+    return out
 
 
 def render_ad_copy_tab():
-    # Form
-    col_main, col_side = st.columns([3, 2], gap="large")
-    with col_main:
-        product  = st.text_input("Product / Service", placeholder="e.g., CloudSync Pro")
-        audience = st.text_input("Target Audience", placeholder="e.g., Small business owners aged 25 to 45")
-        usp      = st.text_input("Key Selling Point", placeholder="e.g., Saves 5 hours per week")
+    _eyebrow("Campaign Brief")
 
-    with col_side:
+    col_l, col_r = st.columns([3, 2], gap="large")
+    with col_l:
+        product  = st.text_input("Product or Service", placeholder="CloudSync Pro")
+        audience = st.text_input("Target Audience", placeholder="Small business owners aged 25 to 45")
+        usp      = st.text_input("Key Selling Point", placeholder="Saves 5 hours per week")
+    with col_r:
         objective = st.selectbox("Campaign Objective", ["Awareness", "Traffic", "Conversions", "Leads"])
         tone      = st.selectbox("Tone", ["Professional", "Casual", "Urgent", "Inspirational"])
-        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
-        generate  = st.button("Generate variants", type="primary", use_container_width=True)
 
-    if generate:
-        if not product or not audience or not usp:
-            st.error("Fill in Product, Audience, and Selling Point to continue.")
-            return
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+    generate = st.button("Generate Ad Copy", type="primary", use_container_width=True)
 
-        with st.spinner("Writing your variants..."):
-            client = get_anthropic_client()
-            variants, used_ai = None, False
-            if client:
-                try:
-                    variants = _call_ai_for_ad_copy(client, product, audience, objective, tone, usp)
-                    used_ai = True
-                except Exception as exc:
-                    st.warning(f"AI unavailable ({str(exc)[:55]}). Falling back to templates.")
-            if not variants:
-                variants = _template_ad_copy(product, audience, objective, tone, usp)
+    if not generate:
+        return
 
-        st.markdown(_thin_rule(), unsafe_allow_html=True)
+    if not (product and audience and usp):
+        st.error("Please fill in Product, Audience, and Key Selling Point.")
+        return
 
-        src_label = "Generated by claude-haiku-4-5" if used_ai else "Generated from templates"
-        src_color = "#22C55E" if used_ai else "#6366F1"
+    with st.spinner("Writing variants..."):
+        client = get_anthropic_client()
+        variants, used_ai = None, False
+        if client:
+            try:
+                variants = _call_ai_for_ad_copy(client, product, audience, objective, tone, usp)
+                used_ai = True
+            except Exception as exc:
+                st.warning(f"AI unavailable ({str(exc)[:55]}). Using template engine.")
+        if not variants:
+            variants = _template_ad_copy(product, audience, objective, tone, usp)
+
+    _sep()
+    _eyebrow("Generated Variants")
+
+    obj_color = OBJECTIVE_COLORS.get(objective, ACCENT)
+    source_label = "AI" if used_ai else "Template"
+    source_color = GREEN if used_ai else "#555"
+
+    st.markdown(
+        f'<div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">'
+        f'<span style="color:#1E1E1E;font-size:0.78rem;font-weight:600;letter-spacing:0.06em;">SOURCE</span>'
+        f'<span style="color:{source_color};font-size:0.78rem;font-weight:600;">{source_label}</span>'
+        f'<span style="color:#1A1A1A;font-size:0.78rem;">|</span>'
+        f'<span style="color:#2E2E2E;font-size:0.78rem;">Objective:</span>'
+        f'<span style="color:{obj_color};font-size:0.78rem;font-weight:600;">{objective}</span>'
+        f'<span style="color:#1A1A1A;font-size:0.78rem;">|</span>'
+        f'<span style="color:#2E2E2E;font-size:0.78rem;">Tone:</span>'
+        f'<span style="color:#666;font-size:0.78rem;font-weight:500;">{tone}</span>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+    for idx, v in enumerate(variants):
+        hl   = v.get("headline", "")
+        pt   = v.get("primary_text", "")
+        cta  = v.get("cta", "Learn More")
+        rat  = v.get("rationale", "")
+        hlen = len(hl)
+        plen = len(pt)
+        h_ok  = hlen <= 40
+        pt_ok = plen <= 125
+
+        h_count_style  = f"color:{'#383838' if h_ok else RED}"
+        pt_count_style = f"color:{'#383838' if pt_ok else RED}"
+
+        num_label = f"0{idx + 1}"
+
         st.markdown(
-            f'<span style="color:{src_color};font-size:0.73rem;font-weight:500;">{src_label}</span>',
+            f'<div style="display:grid;grid-template-columns:36px 1fr;gap:0;border-top:1px solid #141414;'
+            f'padding:28px 0;">'
+
+            # Left: number
+            f'<div style="padding-top:2px;">'
+            f'<span style="color:#1E1E1E;font-size:0.72rem;font-weight:700;font-variant-numeric:tabular-nums;">{num_label}</span>'
+            f'</div>'
+
+            # Right: content
+            f'<div>'
+            f'<div style="display:grid;grid-template-columns:1fr 1fr auto;gap:24px;align-items:start;">'
+
+            # Headline
+            f'<div>'
+            f'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;">'
+            f'<span style="color:#2A2A2A;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Headline</span>'
+            f'<span style="{h_count_style};font-size:0.67rem;font-variant-numeric:tabular-nums;">{hlen}/40</span>'
+            f'</div>'
+            f'<div style="background:#0C0C0C;border:1px solid #171717;border-radius:5px;padding:10px 13px;'
+            f'font-size:0.875rem;color:#E0E0E0;font-weight:500;line-height:1.5;min-height:42px;">{hl}</div>'
+            f'</div>'
+
+            # Primary text
+            f'<div>'
+            f'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;">'
+            f'<span style="color:#2A2A2A;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Primary Text</span>'
+            f'<span style="{pt_count_style};font-size:0.67rem;font-variant-numeric:tabular-nums;">{plen}/125</span>'
+            f'</div>'
+            f'<div style="background:#0C0C0C;border:1px solid #171717;border-radius:5px;padding:10px 13px;'
+            f'font-size:0.875rem;color:#C0C0C0;line-height:1.5;min-height:42px;">{pt}</div>'
+            f'</div>'
+
+            # CTA
+            f'<div>'
+            f'<div style="margin-bottom:7px;">'
+            f'<span style="color:#2A2A2A;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">CTA</span>'
+            f'</div>'
+            f'<button style="background:{obj_color};color:#fff;border:none;border-radius:6px;'
+            f'padding:10px 18px;font-size:0.8rem;font-weight:600;white-space:nowrap;cursor:default;'
+            f'font-family:Inter,sans-serif;letter-spacing:0.01em;">{cta}</button>'
+            f'</div>'
+
+            f'</div>'
+
+            # Rationale
+            f'<div style="margin-top:14px;padding-top:14px;border-top:1px solid #0F0F0F;">'
+            f'<span style="color:#2A2A2A;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">WHY IT WORKS</span>'
+            f'<p style="color:#484848;font-size:0.835rem;line-height:1.7;margin:6px 0 0;">{rat}</p>'
+            f'</div>'
+
+            f'</div>'
+            f'</div>',
             unsafe_allow_html=True,
         )
-        st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
-        nums   = ["01", "02", "03"]
-        obj_c  = OBJECTIVE_COLORS.get(objective, ACCENT)
-
-        for i, v in enumerate(variants):
-            hl    = v.get("headline", "")
-            pt    = v.get("primary_text", "")
-            cta   = v.get("cta", "Learn More")
-            rat   = v.get("rationale", "")
-            hlen  = len(hl)
-            ptlen = len(pt)
-            hc    = "#22C55E" if hlen  <= 40  else "#EF4444"
-            pc    = "#22C55E" if ptlen <= 125 else "#EF4444"
-
-            st.markdown(f"""
-<div style="padding:32px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-
-  <div style="display:flex;align-items:center;gap:14px;margin-bottom:26px;">
-    <span style="color:#FF5E2C;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;flex-shrink:0;">{nums[i]}</span>
-    <div style="height:1px;flex:1;background:rgba(255,255,255,0.05);"></div>
-    <span style="color:#2E2E2E;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;">
-      {objective} &nbsp;·&nbsp; {tone}
-    </span>
-  </div>
-
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-bottom:22px;">
-    <div>
-      <div style="color:#2E2E2E;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;
-      text-transform:uppercase;margin-bottom:10px;">
-        Headline&nbsp;&nbsp;<span style="color:{hc};letter-spacing:0;">{hlen}/40</span>
-      </div>
-      <div style="color:#F0F0F0;font-size:1.08rem;font-weight:600;line-height:1.45;
-      letter-spacing:-0.01em;">{hl}</div>
-    </div>
-    <div>
-      <div style="color:#2E2E2E;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;
-      text-transform:uppercase;margin-bottom:10px;">
-        Primary Text&nbsp;&nbsp;<span style="color:{pc};letter-spacing:0;">{ptlen}/125</span>
-      </div>
-      <div style="color:#888;font-size:0.875rem;line-height:1.7;">{pt}</div>
-    </div>
-  </div>
-
-  <div style="display:flex;align-items:flex-start;gap:20px;">
-    <div style="background:{obj_c};color:#fff;padding:9px 20px;border-radius:4px;
-    font-size:0.8rem;font-weight:600;white-space:nowrap;flex-shrink:0;letter-spacing:0.01em;">
-      {cta}
-    </div>
-    <div style="color:#303030;font-size:0.82rem;line-height:1.65;padding-top:8px;">
-      {rat}
-    </div>
-  </div>
-
-</div>
-""", unsafe_allow_html=True)
+    st.markdown('<div style="border-top:1px solid #141414;margin-top:4px;"></div>', unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
-# TAB 2 — Campaign Performance Analyzer
+# TAB 2 - Campaign Performance Analyzer
 # ---------------------------------------------------------------------------
 
-def _metric_color(col, val):
-    cfg = BENCHMARK_THRESHOLDS.get(col)
+def _metric_color(col_name, value):
+    cfg = BENCHMARK_THRESHOLDS.get(col_name)
     if not cfg:
         return ""
-    g, w, hi = cfg["good"], cfg["warn"], cfg["higher_is_better"]
-    bg = (GREEN if (val >= g if hi else val <= g)
-          else AMBER if (val >= w if hi else val <= w)
+    hi = cfg["higher_is_better"]
+    bg = (GREEN if (value >= cfg["good"] if hi else value <= cfg["good"])
+          else AMBER if (value >= cfg["warn"] if hi else value <= cfg["warn"])
           else RED)
     return f"background-color:{bg};color:#fff;font-weight:600"
 
@@ -302,7 +360,7 @@ def _style_row(row):
     for col in row.index:
         if col in BENCHMARK_THRESHOLDS:
             try:
-                val = float(str(row[col]).replace("%","").replace("$","").replace(",","").strip())
+                val = float(str(row[col]).replace("%","").replace("$","").replace(",","").replace("x","").strip())
                 out.append(_metric_color(col, val))
             except (ValueError, TypeError):
                 out.append("")
@@ -315,16 +373,19 @@ def _analyze_with_ai(client, df_str):
     msg = client.messages.create(
         model="claude-haiku-4-5",
         max_tokens=900,
-        messages=[{"role": "user", "content": (
-            "You are a senior digital marketing analyst. Analyze this campaign data:\n\n"
-            f"{df_str}\n\n"
-            "Benchmarks: CTR > 1% good, ROAS > 2x profitable, CPC < $2 efficient, CPM < $5 efficient.\n\n"
-            "Write three sections with markdown headers:\n"
-            "**What is Working Well** (2-3 bullets with specific numbers)\n"
-            "**What is Underperforming** (2-3 bullets with specific numbers)\n"
-            "**Three Recommendations** (numbered, with expected impact)\n\n"
-            "Reference campaign names and exact figures. No em dashes."
-        )}],
+        messages=[{
+            "role": "user",
+            "content": (
+                "You are a senior digital marketing analyst. Analyze this campaign data:\n\n"
+                f"{df_str}\n\n"
+                "Benchmarks: CTR > 1% good, ROAS > 2x profitable, CPC < $2 efficient, CPM < $5 efficient.\n\n"
+                "Write three sections with markdown headers:\n"
+                "### What is Working Well\n"
+                "### What is Underperforming\n"
+                "### Three Actionable Recommendations\n\n"
+                "Be specific. Use campaign names and exact numbers. No em dashes."
+            ),
+        }],
     )
     return msg.content[0].text
 
@@ -333,110 +394,137 @@ def _analyze_with_rules(df):
     good, bad, recs = [], [], []
     for _, row in df.iterrows():
         name = row.get("Campaign", "This campaign")
-        for col, hi, tg, tw, unit in [
-            ("CTR (%)", True, 1.5, 0.8, "%"),
-            ("ROAS",   True, 3.0, 1.5, "x"),
-            ("CPC ($)", False, 1.5, 2.5, ""),
-            ("CPM ($)", False, 4.0, 8.0, ""),
+        for col, hi, tg, tw in [
+            ("CTR (%)", True, 1.5, 0.8), ("ROAS", True, 3.0, 1.5),
+            ("CPC ($)", False, 1.5, 2.5), ("CPM ($)", False, 4.0, 8.0),
         ]:
             if col not in df.columns:
                 continue
             try:
-                val = float(str(row[col]).replace("$","").replace("%","").replace("x","").replace(",",""))
+                v = float(str(row[col]).replace("$","").replace("%","").replace("x","").replace(",",""))
             except (ValueError, TypeError):
                 continue
             if hi:
-                if val >= tg:
-                    good.append(f"{name} achieves {col} of {val:.2f}{unit} (benchmark: above {tg}{unit})")
-                elif val < tw:
-                    bad.append(f"{name} {col} of {val:.2f}{unit} is below the {tw}{unit} threshold")
-                    if col == "CTR (%)":
-                        recs.append(f"Refresh creatives for {name} to push CTR above 1%")
-                    elif col == "ROAS":
-                        recs.append(f"Improve bid strategy for {name} to reach 2x ROAS")
+                if v >= tg:
+                    good.append(f"{name} achieves {col} of {v:.2f} (benchmark above {tg})")
+                elif v < tw:
+                    bad.append(f"{name} {col} of {v:.2f} is below the {tw} threshold")
+                    recs.append(f"Refresh creatives for {name} to lift CTR above 1%" if col == "CTR (%)" else f"Tighten bidding for {name} to reach 2x ROAS")
             else:
-                if val <= tg:
-                    good.append(f"{name} maintains efficient {col} at {val:.2f} (target: below {tg})")
-                elif val > tw:
-                    bad.append(f"{name} {col} of {val:.2f} exceeds the {tw} target")
-                    if col == "CPC ($)":
-                        recs.append(f"Narrow audience for {name} to bring CPC toward $1.50")
+                if v <= tg:
+                    good.append(f"{name} keeps {col} efficient at {v:.2f}")
+                elif v > tw:
+                    bad.append(f"{name} {col} of {v:.2f} exceeds the {tw} target")
+                    recs.append(f"Narrow audience for {name} to bring CPC toward $1.50" if col == "CPC ($)" else f"Broaden targeting for {name} to lower CPM below $5")
 
     if not good:
-        good = [
-            "All campaigns are generating impressions and measurable site traffic",
-            "Spend is spread across campaigns, reducing single-channel risk",
-        ]
+        good = ["All campaigns are generating measurable impressions and traffic",
+                "Spend is diversified across campaigns, reducing single-channel risk"]
     if not bad:
-        bad = [
-            "Minor efficiency gaps exist that bid adjustments can address",
-            "Conversion volume has room to grow with audience refinement",
-        ]
+        bad = ["Minor efficiency gaps that targeted bid adjustments can address",
+               "Conversion volume can improve with audience refinement"]
     recs = (recs + [
-        "A/B test headlines across campaigns to target a 15 to 20% CTR lift",
+        "A/B test headlines to target a 15 to 20% CTR improvement",
         "Apply dayparting to concentrate budget on peak conversion hours",
-        "Build lookalike audiences from top converters to improve ROAS",
+        "Build lookalike audiences from your top 10% converters to lift ROAS",
     ])[:3]
 
-    lines = ["**What is Working Well**"] + [f"- {p}" for p in good[:3]]
-    lines += ["", "**What is Underperforming**"] + [f"- {p}" for p in bad[:3]]
-    lines += ["", "**Three Recommendations**"] + [f"{i}. {r}" for i, r in enumerate(recs, 1)]
+    lines = ["### What is Working Well"] + [f"- {p}" for p in good[:3]]
+    lines += ["", "### What is Underperforming"] + [f"- {p}" for p in bad[:3]]
+    lines += ["", "### Three Actionable Recommendations"] + [f"{i}. {r}" for i, r in enumerate(recs, 1)]
     return "\n".join(lines)
 
 
-DEFAULT_CAMPAIGN_DATA = {
-    "Campaign":    ["Brand Awareness Q4", "Lead Gen - Email List", "Retargeting - Abandoned Cart"],
+DEFAULT_DATA = {
+    "Campaign": ["Brand Awareness Q4", "Lead Gen - Email List", "Retargeting - Abandoned Cart"],
     "Impressions": [450000, 120000, 85000],
-    "Clicks":      [3150,   2040,   2125],
-    "Conversions": [63,     204,    468],
-    "Spend ($)":   [1800,   1560,   1275],
-    "Reach":       [380000, 95000,  72000],
-    "CTR (%)":     [0.70,   1.70,   2.50],
-    "CPC ($)":     [0.57,   0.76,   0.60],
-    "CPM ($)":     [4.00,   13.00,  15.00],
-    "ROAS":        [1.75,   3.20,   5.50],
+    "Clicks": [3150, 2040, 2125],
+    "Conversions": [63, 204, 468],
+    "Spend ($)": [1800, 1560, 1275],
+    "Reach": [380000, 95000, 72000],
+    "CTR (%)": [0.70, 1.70, 2.50],
+    "CPC ($)": [0.57, 0.76, 0.60],
+    "CPM ($)": [4.00, 13.00, 15.00],
+    "ROAS": [1.75, 3.20, 5.50],
 }
 
 
 def render_performance_tab():
+    _eyebrow("Campaign Data")
+
     method = st.radio("", ["Manual Entry", "Upload CSV"], horizontal=True, label_visibility="collapsed")
     df = None
 
-    st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
-
     if method == "Manual Entry":
-        df = st.data_editor(
-            pd.DataFrame(DEFAULT_CAMPAIGN_DATA),
-            use_container_width=True,
-            num_rows="dynamic",
-            key="campaign_editor",
-        )
+        df = st.data_editor(pd.DataFrame(DEFAULT_DATA), use_container_width=True, num_rows="dynamic", key="ce")
     else:
-        uploaded = st.file_uploader("Upload CSV", type=["csv"], label_visibility="collapsed")
-        if uploaded:
-            df = pd.read_csv(uploaded)
+        up = st.file_uploader("Upload CSV", type=["csv"])
+        if up:
+            df = pd.read_csv(up)
             st.dataframe(df, use_container_width=True)
         else:
             st.markdown(
-                '<div style="color:#2E2E2E;font-size:0.82rem;padding:14px 0;">'
-                'Expected columns: Campaign, Impressions, Clicks, Conversions, '
-                'Spend ($), Reach, CTR (%), CPC ($), CPM ($), ROAS</div>',
+                '<p style="color:#2E2E2E;font-size:0.84rem;">Expected columns: Campaign, Impressions, Clicks, Conversions, Spend ($), Reach, CTR (%), CPC ($), CPM ($), ROAS</p>',
                 unsafe_allow_html=True,
             )
 
     if df is None or df.empty:
         return
 
+    _sep()
+
+    # KPI strip
+    _eyebrow("Aggregate Performance")
+    kpi_defs = [
+        ("Avg CTR", "CTR (%)", "CTR (%)", lambda v: f"{v:.2f}%"),
+        ("Avg CPC", "CPC ($)", "CPC ($)", lambda v: f"${v:.2f}"),
+        ("Avg CPM", "CPM ($)", "CPM ($)", lambda v: f"${v:.2f}"),
+        ("Avg ROAS", "ROAS", "ROAS", lambda v: f"{v:.2f}x"),
+        ("Total Conv.", "Conversions", None, lambda v: f"{v:,.0f}"),
+    ]
+    kpi_cols = st.columns(5, gap="large")
+    kpi_vals = {}
+    for col_w, (label, src_col, bench_col, fmt) in zip(kpi_cols, kpi_defs):
+        if src_col not in df.columns:
+            continue
+        try:
+            nums = pd.to_numeric(df[src_col].astype(str).str.replace(r"[$%x,]","",regex=True), errors="coerce")
+            val = nums.sum() if "Conv" in label else nums.mean()
+            kpi_vals[src_col] = val
+
+            # Color based on benchmark
+            val_color = "#E2E2E2"
+            if bench_col and bench_col in BENCHMARK_THRESHOLDS:
+                cfg = BENCHMARK_THRESHOLDS[bench_col]
+                hi = cfg["higher_is_better"]
+                val_color = (GREEN if (val >= cfg["good"] if hi else val <= cfg["good"])
+                             else AMBER if (val >= cfg["warn"] if hi else val <= cfg["warn"])
+                             else RED)
+
+            col_w.markdown(
+                f'<div>'
+                f'<div style="color:#232323;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;">{label}</div>'
+                f'<div style="color:{val_color};font-size:1.55rem;font-weight:700;letter-spacing:-0.025em;font-variant-numeric:tabular-nums;line-height:1;">{fmt(val)}</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+        except Exception:
+            pass
+
+    _sep()
+
     # Color-coded table
-    st.markdown(_thin_rule(), unsafe_allow_html=True)
+    _eyebrow("Performance Breakdown")
     st.markdown(
-        '<div style="display:flex;gap:16px;align-items:center;margin-bottom:14px;">'
-        f'<span style="color:#2E2E2E;font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;">Performance Table</span>'
-        '<div style="display:flex;gap:10px;margin-left:auto;">'
-        f'<span style="color:{GREEN};font-size:0.7rem;font-weight:500;">● Strong</span>'
-        f'<span style="color:{AMBER};font-size:0.7rem;font-weight:500;">● Watch</span>'
-        f'<span style="color:{RED};font-size:0.7rem;font-weight:500;">● Below target</span>'
-        '</div></div>',
+        '<div style="display:flex;gap:16px;margin-bottom:14px;align-items:center;">'
+        f'<span style="color:#2A2A2A;font-size:0.72rem;font-weight:600;">COLOR KEY</span>'
+        f'<span style="display:flex;align-items:center;gap:5px;color:{GREEN};font-size:0.72rem;font-weight:600;">'
+        f'<span style="width:6px;height:6px;background:{GREEN};border-radius:50%;display:inline-block;"></span>Strong</span>'
+        f'<span style="display:flex;align-items:center;gap:5px;color:{AMBER};font-size:0.72rem;font-weight:600;">'
+        f'<span style="width:6px;height:6px;background:{AMBER};border-radius:50%;display:inline-block;"></span>Needs work</span>'
+        f'<span style="display:flex;align-items:center;gap:5px;color:{RED};font-size:0.72rem;font-weight:600;">'
+        f'<span style="width:6px;height:6px;background:{RED};border-radius:50%;display:inline-block;"></span>Underperforming</span>'
+        '</div>',
         unsafe_allow_html=True,
     )
     try:
@@ -444,141 +532,68 @@ def render_performance_tab():
     except Exception:
         st.dataframe(df, use_container_width=True)
 
-    # Aggregate KPI row — pure HTML numbers
-    kpi_defs = [
-        ("Avg CTR",     "CTR (%)",     lambda v: f"{v:.2f}%",   "benchmark: > 1.0%"),
-        ("Avg CPC",     "CPC ($)",     lambda v: f"${v:.2f}",   "target: < $2.00"),
-        ("Avg CPM",     "CPM ($)",     lambda v: f"${v:.2f}",   "target: < $5.00"),
-        ("Avg ROAS",    "ROAS",        lambda v: f"{v:.2f}x",   "benchmark: > 2.0x"),
-        ("Conversions", "Conversions", lambda v: f"{v:,.0f}",   "total across campaigns"),
-    ]
-
-    kpi_parts = []
-    for label, col_name, fmt, bench in kpi_defs:
-        if col_name not in df.columns:
-            continue
-        try:
-            nums = pd.to_numeric(
-                df[col_name].astype(str).str.replace(r"[$%x,]", "", regex=True), errors="coerce"
-            )
-            val = nums.sum() if "Conv" in label else nums.mean()
-            # Color only the benchmark-tracked metrics
-            cfg = BENCHMARK_THRESHOLDS.get(col_name)
-            if cfg:
-                g, w, hi = cfg["good"], cfg["warn"], cfg["higher_is_better"]
-                vc = GREEN if (val >= g if hi else val <= g) else (AMBER if (val >= w if hi else val <= w) else RED)
-            else:
-                vc = "#E8E8E8"
-            kpi_parts.append(
-                f'<div style="border-right:1px solid rgba(255,255,255,0.05);padding-right:28px;margin-right:0;">'
-                f'<div style="color:#303030;font-size:0.65rem;font-weight:600;letter-spacing:0.1em;'
-                f'text-transform:uppercase;margin-bottom:8px;">{label}</div>'
-                f'<div style="color:{vc};font-size:1.55rem;font-weight:700;letter-spacing:-0.025em;'
-                f'font-variant-numeric:tabular-nums;margin-bottom:5px;">{fmt(val)}</div>'
-                f'<div style="color:#242424;font-size:0.7rem;">{bench}</div>'
-                f'</div>'
-            )
-        except Exception:
-            pass
-
-    if kpi_parts:
-        st.markdown(_thin_rule(), unsafe_allow_html=True)
-        st.markdown(
-            f'<div style="display:grid;grid-template-columns:repeat({len(kpi_parts)},1fr);'
-            f'gap:28px;padding:20px 0;">' + "".join(kpi_parts) + "</div>",
-            unsafe_allow_html=True,
-        )
-
     # ROAS chart
     if "ROAS" in df.columns and "Campaign" in df.columns:
-        st.markdown(_thin_rule(), unsafe_allow_html=True)
-        st.markdown(_label("ROAS vs 2x Benchmark"), unsafe_allow_html=True)
+        _sep()
+        _eyebrow("ROAS vs 2x Benchmark")
         try:
-            roas_vals = pd.to_numeric(
-                df["ROAS"].astype(str).str.replace(r"[x,]", "", regex=True), errors="coerce"
-            ).tolist()
-            campaigns = df["Campaign"].tolist()
-
-            bar_colors = [ACCENT if v >= 2 else "#1E1E1E" for v in roas_vals]
-            text_colors = [ACCENT if v >= 2 else "#444" for v in roas_vals]
-
-            fig = go.Figure()
-            fig.add_trace(go.Bar(
-                x=roas_vals, y=campaigns,
-                orientation="h",
-                marker=dict(color=bar_colors, line=dict(width=0)),
-                text=[f"{v:.2f}x" for v in roas_vals],
-                textposition="outside",
-                textfont=dict(size=12, color=text_colors),
-                hovertemplate="%{y}: %{x:.2f}x ROAS<extra></extra>",
+            roas_raw = pd.to_numeric(df["ROAS"].astype(str).str.replace(r"[x,]","",regex=True), errors="coerce")
+            bar_c = [GREEN if v >= 2 else (AMBER if v >= 1.5 else RED) for v in roas_raw]
+            fig = go.Figure(go.Bar(
+                x=roas_raw.tolist(), y=df["Campaign"].tolist(), orientation="h",
+                marker_color=bar_c,
+                text=[f"{v:.2f}x" for v in roas_raw],
+                textposition="outside", textfont=dict(color="#555", size=12, family="Inter"),
+                hovertemplate="%{y}: %{x:.2f}x<extra></extra>",
             ))
-            fig.add_vline(
-                x=2.0, line_dash="dot",
-                line_color="rgba(255,255,255,0.12)", line_width=1.5,
-                annotation_text="2x", annotation_font_color="#444",
-                annotation_font_size=11, annotation_position="top right",
-            )
+            fig.add_vline(x=2.0, line_dash="dot", line_color="#2A2A2A", line_width=1.5,
+                          annotation_text="2x target", annotation_font_color="#444",
+                          annotation_position="top right", annotation_font_size=11)
             fig.update_layout(
-                height=160 + len(campaigns) * 44,
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
-                xaxis=dict(
-                    showgrid=True, gridcolor="rgba(255,255,255,0.03)",
-                    zeroline=False, color="#333", tickfont=dict(size=11),
-                    title=None,
-                ),
-                yaxis=dict(
-                    color="#777", automargin=True,
-                    tickfont=dict(size=12),
-                ),
-                margin=dict(l=0, r=70, t=8, b=8),
-                font=dict(color="#555", size=12),
-                showlegend=False,
+                height=48 * len(df) + 90,
+                margin=dict(l=0, r=70, t=0, b=24),
+                plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
+                xaxis=dict(color="#2A2A2A", gridcolor="#0F0F0F", tickfont=dict(size=11, family="Inter"),
+                           title=dict(text="", font=dict(color="#333")),
+                           range=[0, max(roas_raw.max() * 1.3, 3.5)]),
+                yaxis=dict(color="#555", tickfont=dict(size=12, family="Inter"), automargin=True),
+                font=dict(color="#555", family="Inter"), showlegend=False,
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
         except Exception:
             pass
 
-    # AI analysis
-    st.markdown(_thin_rule(), unsafe_allow_html=True)
-    st.markdown(_label("Performance Analysis"), unsafe_allow_html=True)
+    _sep()
+    _eyebrow("AI Analysis")
 
-    if st.button("Run analysis", type="primary"):
+    if st.button("Analyze Campaign Performance", type="primary"):
         with st.spinner("Analyzing..."):
             client = get_anthropic_client()
-            df_str = df.to_string(index=False)
             if client:
                 try:
-                    analysis = _analyze_with_ai(client, df_str)
-                    ai_label = "claude-haiku-4-5"
+                    analysis = _analyze_with_ai(client, df.to_string(index=False))
+                    badge = f'<span style="color:{GREEN};font-size:0.72rem;font-weight:600;">claude-haiku-4-5</span>'
                 except Exception as exc:
-                    st.warning(f"AI unavailable ({str(exc)[:55]}). Using rule-based engine.")
+                    st.warning(str(exc)[:60])
                     analysis = _analyze_with_rules(df)
-                    ai_label = None
+                    badge = f'<span style="color:#444;font-size:0.72rem;font-weight:600;">Rule engine</span>'
             else:
                 analysis = _analyze_with_rules(df)
-                ai_label = None
+                badge = f'<span style="color:#444;font-size:0.72rem;font-weight:600;">Rule engine</span>'
 
-        if ai_label:
-            st.markdown(
-                f'<span style="color:#22C55E;font-size:0.72rem;font-weight:500;">'
-                f'Powered by {ai_label}</span>',
-                unsafe_allow_html=True,
-            )
-        else:
-            st.markdown(
-                '<span style="color:#6366F1;font-size:0.72rem;font-weight:500;">Rule-based analysis</span>',
-                unsafe_allow_html=True,
-            )
-        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
-
-        st.markdown(f'<div class="analysis-text">', unsafe_allow_html=True)
+        st.markdown(
+            f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">'
+            f'<span style="color:#222;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;">POWERED BY</span>'
+            f'{badge}</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown('<div class="analysis-out">', unsafe_allow_html=True)
         st.markdown(analysis)
         st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
-# TAB 3 — A/B Variant Scorer
+# TAB 3 - A/B Variant Scorer
 # ---------------------------------------------------------------------------
 
 def _score_clarity(h, b):
@@ -607,7 +622,7 @@ def _score_relevance(h, b):
     s = 4.0
     c = (h + " " + b).lower()
     s += min(sum(1 for w in POWER_WORDS if w in c) * 0.6, 3.0)
-    if re.search(r"\d+%|\d+x|\$\d+|\d+ hours|\d+ days|\d+ minutes", c):
+    if re.search(r"\d+%|\d+x|\$\d+|\d+ hours|\d+ days|\d+ min", c):
         s += 1.5
     s += min(sum(1 for w in ["save","get","increase","reduce","improve","boost","gain","earn"] if w in c) * 0.5, 1.5)
     return min(max(round(s, 1), 0.0), 10.0)
@@ -627,221 +642,193 @@ def _overall(cl, ur, rv, ct):
     return round(cl * 0.30 + ur * 0.20 + rv * 0.30 + ct * 0.20, 1)
 
 
-_V_COLORS = ["#FF5E2C", "#6366F1", "#10B981", "#F59E0B", "#8B5CF6"]
-_V_FILL   = ["rgba(255,94,44,0.12)", "rgba(99,102,241,0.12)", "rgba(16,185,129,0.12)",
-             "rgba(245,158,11,0.12)", "rgba(139,92,246,0.12)"]
-
-
-def _bar_chart(results):
-    fig = go.Figure()
-    dims = ["Clarity", "Urgency", "Relevance", "CTA Strength"]
-    for i, (_, row) in enumerate(results.iterrows()):
-        fig.add_trace(go.Bar(
-            name=row["Variant"],
-            x=dims,
-            y=[row[d] for d in dims],
-            marker_color=_V_COLORS[i % len(_V_COLORS)],
-            marker_opacity=0.85,
-            text=[f"{row[d]:.1f}" for d in dims],
-            textposition="outside",
-            textfont=dict(size=11, color="#555"),
-        ))
-    fig.update_layout(
-        barmode="group",
-        plot_bgcolor="rgba(0,0,0,0)",
-        paper_bgcolor="rgba(0,0,0,0)",
-        xaxis=dict(color="#444", gridcolor="rgba(0,0,0,0)", tickfont=dict(size=12)),
-        yaxis=dict(range=[0, 12], color="#333", gridcolor="rgba(255,255,255,0.03)",
-                   tickfont=dict(size=11), title=None, zeroline=False),
-        legend=dict(font=dict(color="#777", size=11), bgcolor="rgba(0,0,0,0)",
-                    orientation="h", y=1.12, x=0),
-        margin=dict(l=0, r=0, t=30, b=0),
-        font=dict(color="#666", size=12),
-        height=320,
+def _score_bar_html(label, score, color):
+    pct = int(score * 10)
+    return (
+        f'<div style="display:grid;grid-template-columns:90px 1fr 32px;gap:10px;align-items:center;margin-bottom:8px;">'
+        f'<span style="color:#333;font-size:0.72rem;font-weight:500;">{label}</span>'
+        f'<div style="height:3px;background:#111;border-radius:2px;overflow:hidden;">'
+        f'<div style="height:100%;width:{pct}%;background:{color};border-radius:2px;transition:width 0.4s;"></div>'
+        f'</div>'
+        f'<span style="color:#555;font-size:0.72rem;font-weight:600;font-variant-numeric:tabular-nums;text-align:right;">{score:.1f}</span>'
+        f'</div>'
     )
-    return fig
-
-
-def _radar_chart(results):
-    dims = ["Clarity", "Urgency", "Relevance", "CTA Strength"]
-    fig = go.Figure()
-    for i, (_, row) in enumerate(results.iterrows()):
-        vals = [row[d] for d in dims] + [row[dims[0]]]
-        fig.add_trace(go.Scatterpolar(
-            r=vals,
-            theta=dims + [dims[0]],
-            fill="toself",
-            name=row["Variant"],
-            line=dict(color=_V_COLORS[i % len(_V_COLORS)], width=2),
-            fillcolor=_V_FILL[i % len(_V_FILL)],
-        ))
-    fig.update_layout(
-        polar=dict(
-            bgcolor="rgba(0,0,0,0)",
-            radialaxis=dict(visible=True, range=[0, 10], color="#2E2E2E",
-                            gridcolor="rgba(255,255,255,0.05)", tickfont=dict(size=9)),
-            angularaxis=dict(color="#555", gridcolor="rgba(255,255,255,0.05)"),
-        ),
-        legend=dict(font=dict(color="#777", size=11), bgcolor="rgba(0,0,0,0)",
-                    orientation="h", y=1.12, x=0),
-        plot_bgcolor="rgba(0,0,0,0)",
-        paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#555", size=12),
-        margin=dict(l=10, r=10, t=30, b=10),
-        height=320,
-    )
-    return fig
 
 
 def render_ab_scorer_tab():
-    # Scoring key
+    # Scoring legend
     st.markdown(
-        '<div style="display:flex;gap:28px;padding-bottom:24px;'
-        'border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:28px;">'
+        '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px;">'
         + "".join([
-            f'<div><div style="color:#2E2E2E;font-size:0.65rem;font-weight:600;'
-            f'letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">{n}</div>'
-            f'<div style="color:#555;font-size:0.8rem;">{w}</div></div>'
-            for n, w in [("Clarity","30%"), ("Relevance","30%"), ("Urgency","20%"), ("CTA Strength","20%")]
+            f'<div style="border:1px solid #141414;border-radius:6px;padding:14px 16px;">'
+            f'<div style="color:#1E1E1E;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;margin-bottom:8px;text-transform:uppercase;">{dim}</div>'
+            f'<div style="color:#3A3A3A;font-size:0.78rem;font-weight:600;">{wt}</div>'
+            f'<div style="color:#1E1E1E;font-size:0.72rem;margin-top:4px;">{desc}</div>'
+            f'</div>'
+            for dim, wt, desc in [
+                ("Clarity", "30% weight", "Headline length, body structure, readability"),
+                ("Relevance", "30% weight", "Power words, specificity, benefit language"),
+                ("Urgency", "20% weight", "Time pressure, action triggers, numbers"),
+                ("CTA Strength", "20% weight", "Action verbs, direct calls to action"),
+            ]
         ])
         + '</div>',
         unsafe_allow_html=True,
     )
 
-    num_variants = st.slider("", min_value=2, max_value=5, value=2, label_visibility="collapsed")
-    st.markdown(
-        f'<span style="color:#2E2E2E;font-size:0.72rem;">{num_variants} variants selected</span>',
-        unsafe_allow_html=True,
-    )
-    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
-
-    variants_input = []
-    for i in range(num_variants):
-        label = chr(65 + i)
-        with st.expander(f"Variant {label}", expanded=(i < 2)):
+    _eyebrow("Variant Inputs")
+    n = st.slider("Number of variants", min_value=2, max_value=5, value=2, label_visibility="collapsed")
+    inputs = []
+    for i in range(n):
+        lbl = chr(65 + i)
+        with st.expander(f"Variant {lbl}", expanded=(i < 2)):
             c1, c2 = st.columns(2, gap="medium")
             with c1:
-                hl = st.text_input("Headline", key=f"ab_hl_{i}",
-                                   placeholder="e.g., Save 3 Hours Daily with AI")
+                hl = st.text_input("Headline", key=f"hl{i}", placeholder="Save 3 Hours Daily with AI", label_visibility="collapsed")
+                st.markdown('<span style="color:#242424;font-size:0.67rem;">HEADLINE</span>', unsafe_allow_html=True)
             with c2:
-                bd = st.text_area("Ad Body", key=f"ab_bd_{i}",
-                                  placeholder="e.g., Join 10,000 teams who automate their workflow. Start free today.",
-                                  height=72)
-        variants_input.append({"name": f"Variant {label}", "headline": hl, "body": bd})
+                bd = st.text_area("Body", key=f"bd{i}", placeholder="Join 10,000 teams who automate their workflow. Start free today.", height=70, label_visibility="collapsed")
+                st.markdown('<span style="color:#242424;font-size:0.67rem;">AD BODY</span>', unsafe_allow_html=True)
+        inputs.append({"name": f"Variant {lbl}", "headline": hl, "body": bd})
 
-    st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+    if not st.button("Score All Variants", type="primary", use_container_width=True):
+        return
 
-    if st.button("Score variants", type="primary", use_container_width=True):
-        valid = [v for v in variants_input if v["headline"] and v["body"]]
-        if len(valid) < 2:
-            st.error("Enter at least 2 complete variants to score.")
-            return
+    valid = [v for v in inputs if v["headline"] and v["body"]]
+    if len(valid) < 2:
+        st.error("Enter at least 2 complete variants.")
+        return
 
-        rows = []
-        for v in valid:
-            cl = _score_clarity(v["headline"], v["body"])
-            ur = _score_urgency(v["headline"], v["body"])
-            rv = _score_relevance(v["headline"], v["body"])
-            ct = _score_cta(v["headline"], v["body"])
-            ov = _overall(cl, ur, rv, ct)
-            rows.append({"Variant": v["name"], "Clarity": cl, "Urgency": ur,
-                         "Relevance": rv, "CTA Strength": ct, "Overall": ov})
+    rows = []
+    for v in valid:
+        cl = _score_clarity(v["headline"], v["body"])
+        ur = _score_urgency(v["headline"], v["body"])
+        rv = _score_relevance(v["headline"], v["body"])
+        ct = _score_cta(v["headline"], v["body"])
+        ov = _overall(cl, ur, rv, ct)
+        rows.append({"name": v["name"], "cl": cl, "ur": ur, "rv": rv, "ct": ct, "ov": ov})
 
-        results = pd.DataFrame(rows).sort_values("Overall", ascending=False).reset_index(drop=True)
+    rows.sort(key=lambda r: r["ov"], reverse=True)
 
-        st.markdown(_thin_rule(), unsafe_allow_html=True)
+    _sep()
+    _eyebrow("Ranked Results")
 
-        # Score table — inline HTML for clean look
-        score_cols = ["Clarity", "Urgency", "Relevance", "CTA Strength", "Overall"]
+    dim_colors = {"cl": "#6366F1", "ur": RED, "rv": GREEN, "ct": AMBER}
+    dim_labels = {"cl": "Clarity", "ur": "Urgency", "rv": "Relevance", "ct": "CTA Strength"}
 
-        def _cell(val, is_overall=False):
-            c = (GREEN if val >= 7 else AMBER if val >= 5 else RED)
-            size = "0.98rem" if is_overall else "0.88rem"
-            weight = "700" if is_overall else "500"
-            return (f'<td style="padding:12px 16px;color:{c};font-size:{size};'
-                    f'font-weight:{weight};font-variant-numeric:tabular-nums;">{val:.1f}</td>')
+    for rank, row in enumerate(rows):
+        ov = row["ov"]
+        ov_color = GREEN if ov >= 7.5 else (AMBER if ov >= 5.5 else RED)
+        is_winner = rank == 0
 
-        header_cells = ('<th style="padding:10px 16px;color:#2E2E2E;font-size:0.65rem;font-weight:600;'
-                       'letter-spacing:0.1em;text-transform:uppercase;text-align:left;">Variant</th>'
-                       + "".join(
-                           f'<th style="padding:10px 16px;color:#2E2E2E;font-size:0.65rem;font-weight:600;'
-                           f'letter-spacing:0.1em;text-transform:uppercase;">{col}</th>'
-                           for col in score_cols
-                       ))
-        rows_html = ""
-        for i, (_, row) in enumerate(results.iterrows()):
-            vc = _V_COLORS[i % len(_V_COLORS)]
-            rows_html += (
-                f'<tr style="border-bottom:1px solid rgba(255,255,255,0.04);">'
-                f'<td style="padding:12px 16px;">'
-                f'<span style="display:inline-flex;align-items:center;gap:7px;">'
-                f'<span style="width:7px;height:7px;border-radius:50%;background:{vc};flex-shrink:0;"></span>'
-                f'<span style="color:#CCC;font-size:0.875rem;font-weight:500;">{row["Variant"]}</span>'
-                f'</span></td>'
-                + _cell(row["Clarity"])
-                + _cell(row["Urgency"])
-                + _cell(row["Relevance"])
-                + _cell(row["CTA Strength"])
-                + _cell(row["Overall"], is_overall=True)
-                + '</tr>'
-            )
+        bars_html = "".join(_score_bar_html(dim_labels[k], row[k], dim_colors[k]) for k in ["cl", "rv", "ur", "ct"])
+
+        border_style = f"border:1px solid rgba(255,107,59,0.15);border-left:3px solid #FF6B3B;" if is_winner else "border:1px solid #141414;"
 
         st.markdown(
-            f'<table style="width:100%;border-collapse:collapse;background:#0C0C0C;'
-            f'border:1px solid rgba(255,255,255,0.06);border-radius:6px;overflow:hidden;">'
-            f'<thead style="border-bottom:1px solid rgba(255,255,255,0.06);">'
-            f'<tr>{header_cells}</tr></thead>'
-            f'<tbody>{rows_html}</tbody></table>',
+            f'<div style="{border_style}border-radius:7px;padding:22px 24px;margin-bottom:10px;'
+            f'background:{"#0D0D0D" if is_winner else "#0A0A0A"};">'
+
+            f'<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;">'
+            f'<div style="display:flex;align-items:baseline;gap:14px;">'
+            f'<span style="color:#1A1A1A;font-size:0.72rem;font-weight:700;font-variant-numeric:tabular-nums;">#{rank+1}</span>'
+            f'<span style="color:{"#E8E8E8" if is_winner else "#666"};font-size:0.875rem;font-weight:{"600" if is_winner else "400"};">{row["name"]}</span>'
+            + (f'<span style="color:#FF6B3B;font-size:0.67rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;">RECOMMENDED</span>' if is_winner else '')
+            + f'</div>'
+            f'<span style="color:{ov_color};font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;">{ov:.1f}<span style="font-size:0.75rem;color:#252525;font-weight:500;">/10</span></span>'
+            f'</div>'
+
+            f'{bars_html}'
+
+            f'</div>',
             unsafe_allow_html=True,
         )
 
-        # Charts
-        st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
-        chart_col, radar_col = st.columns(2, gap="large")
-        with chart_col:
-            st.markdown(_label("Score by Dimension"), unsafe_allow_html=True)
-            st.plotly_chart(_bar_chart(results), use_container_width=True)
-        with radar_col:
-            st.markdown(_label("Radar Comparison"), unsafe_allow_html=True)
-            st.plotly_chart(_radar_chart(results), use_container_width=True)
+    # Charts
+    _sep()
+    _eyebrow("Visual Breakdown")
 
-        # Recommendation
-        winner = results.iloc[0]
-        runner = results.iloc[1] if len(results) > 1 else None
-        best   = max(["Clarity", "Urgency", "Relevance", "CTA Strength"], key=lambda d: winner[d])
-        gap    = winner["Overall"] - runner["Overall"] if runner is not None else 0
+    bar_col, radar_col = st.columns(2, gap="large")
 
-        rec = (f"{winner['Variant']} scores highest at {winner['Overall']:.1f}/10, "
-               f"leading on {best} ({winner[best]:.1f}/10).")
-        if runner is not None:
-            rec += (f" Test it first." if gap >= 0.5 else
-                    f" {runner['Variant']} ({runner['Overall']:.1f}/10) is close enough to run as a direct challenger.")
+    with bar_col:
+        fig_bar = go.Figure()
+        dl = {"cl": "Clarity", "rv": "Relevance", "ur": "Urgency", "ct": "CTA Strength", "ov": "Overall"}
+        dc = {"cl": "#6366F1", "rv": GREEN, "ur": RED, "ct": AMBER, "ov": ACCENT}
+        for k, lbl in dl.items():
+            fig_bar.add_trace(go.Bar(
+                name=lbl, x=[r["name"] for r in rows], y=[r[k] for r in rows],
+                marker_color=dc[k], text=[f"{r[k]:.1f}" for r in rows],
+                textposition="outside", textfont=dict(size=10, color="#444", family="Inter"),
+            ))
+        fig_bar.update_layout(
+            barmode="group", height=300,
+            plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
+            xaxis=dict(color="#333", gridcolor="#0E0E0E", tickfont=dict(size=11, family="Inter")),
+            yaxis=dict(range=[0, 12], color="#2A2A2A", gridcolor="#0E0E0E",
+                       tickfont=dict(size=10, family="Inter")),
+            legend=dict(font=dict(size=10, color="#444", family="Inter"), bgcolor="rgba(0,0,0,0)",
+                        orientation="h", y=1.08, x=0),
+            margin=dict(l=0, r=0, t=30, b=0), font=dict(family="Inter"),
+            title=dict(text="Score by Dimension", font=dict(size=11, color="#333", family="Inter"), x=0),
+        )
+        st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar": False})
 
-        st.markdown(_thin_rule(), unsafe_allow_html=True)
-        vc = _V_COLORS[0]
-        st.markdown(
-            f'<div style="padding:4px 0 24px;">'
-            f'<div style="color:#2E2E2E;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;'
-            f'text-transform:uppercase;margin-bottom:12px;">Recommendation</div>'
-            f'<div style="font-size:1.0rem;color:#CCC;line-height:1.7;max-width:700px;">'
-            f'<span style="color:{vc};font-weight:600;">{winner["Variant"]}</span> {rec[len(winner["Variant"]):]}'
-            f'</div></div>',
-            unsafe_allow_html=True,
+    with radar_col:
+        dims = ["Clarity", "Urgency", "Relevance", "CTA Strength"]
+        radar_c = [(ACCENT, "rgba(255,107,59,0.12)"), ("#6366F1","rgba(99,102,241,0.12)"),
+                   (GREEN,"rgba(34,197,94,0.12)"), (AMBER,"rgba(245,158,11,0.12)"), (RED,"rgba(239,68,68,0.12)")]
+        fig_r = go.Figure()
+        for i, row in enumerate(rows):
+            lc, fc = radar_c[i % len(radar_c)]
+            vals = [row[k] for k in ["cl", "ur", "rv", "ct"]] + [row["cl"]]
+            fig_r.add_trace(go.Scatterpolar(
+                r=vals, theta=dims + [dims[0]], fill="toself", name=row["name"],
+                line=dict(color=lc, width=1.5), fillcolor=fc,
+            ))
+        fig_r.update_layout(
+            polar=dict(
+                bgcolor="rgba(0,0,0,0)",
+                radialaxis=dict(visible=True, range=[0, 10], color="#1E1E1E",
+                                gridcolor="#111", tickfont=dict(size=8, family="Inter", color="#2A2A2A")),
+                angularaxis=dict(color="#333", gridcolor="#111",
+                                 tickfont=dict(size=10, family="Inter", color="#555")),
+            ),
+            showlegend=True,
+            legend=dict(font=dict(size=10, color="#444", family="Inter"), bgcolor="rgba(0,0,0,0)"),
+            plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
+            height=300, margin=dict(l=10, r=10, t=30, b=10), font=dict(family="Inter"),
+            title=dict(text="Radar Comparison", font=dict(size=11, color="#333", family="Inter"), x=0.5),
+        )
+        st.plotly_chart(fig_r, use_container_width=True, config={"displayModeBar": False})
+
+    # Recommendation prose
+    _sep()
+    winner = rows[0]
+    runner = rows[1] if len(rows) > 1 else None
+    best_dim_key = max(["cl", "ur", "rv", "ct"], key=lambda k: winner[k])
+    best_dim_name = dim_labels[best_dim_key]
+    gap = winner["ov"] - runner["ov"] if runner else 0
+
+    rec = (
+        f"{winner['name']} is your strongest performer at {winner['ov']:.1f}/10, "
+        f"leading on {best_dim_name} ({winner[best_dim_key]:.1f}/10). "
+    )
+    if runner:
+        rec += (
+            f"Launch it as your primary creative. {runner['name']} ({runner['ov']:.1f}/10) is close "
+            f"and worth testing as a challenger."
+            if gap < 0.7 else
+            f"It outscores {runner['name']} by {gap:.1f} points. Use {winner['name']} as your primary creative."
         )
 
-        # Per-variant breakdown with st.metric
-        st.markdown(_label("Dimension Breakdown"), unsafe_allow_html=True)
-        metric_cols = st.columns(len(valid), gap="large")
-        for col_w, (_, row) in zip(metric_cols, results.iterrows()):
-            col_w.markdown(
-                f'<span style="color:#888;font-size:0.8rem;font-weight:600;">{row["Variant"]}</span>',
-                unsafe_allow_html=True,
-            )
-            col_w.metric("Clarity",      f"{row['Clarity']}/10")
-            col_w.metric("Urgency",      f"{row['Urgency']}/10")
-            col_w.metric("Relevance",    f"{row['Relevance']}/10")
-            col_w.metric("CTA Strength", f"{row['CTA Strength']}/10")
-            col_w.metric("Overall",      f"{row['Overall']}/10")
+    st.markdown(
+        f'<div style="border:1px solid #141414;border-radius:7px;padding:22px 24px;">'
+        f'<div style="color:#2A2A2A;font-size:0.64rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;">Recommendation</div>'
+        f'<p style="color:#666;font-size:0.9rem;line-height:1.75;margin:0;">{rec}</p>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -851,74 +838,63 @@ def render_ab_scorer_tab():
 def main():
     inject_css()
 
-    # Sidebar
     with st.sidebar:
-        client = get_anthropic_client()
+        api_ok = get_anthropic_client() is not None
+        dot_c = GREEN if api_ok else AMBER
+        status_lbl = "Connected" if api_ok else "Not configured"
 
         st.markdown(
-            '<div style="margin-bottom:24px;padding-bottom:20px;'
-            'border-bottom:1px solid rgba(255,255,255,0.05);">'
-            '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">'
-            '<span style="color:#FF5E2C;font-weight:800;font-size:0.95rem;">◆</span>'
-            '<span style="color:#E8E8E8;font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;">Marketing AI</span>'
-            '</div>'
-            '<span style="color:#1E1E1E;font-size:0.72rem;padding-left:20px;">Platform v1.0</span>'
-            '</div>',
+            f'<div style="margin-bottom:24px;">'
+            f'<div style="color:#D8D8D8;font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:2px;">Marketing AI</div>'
+            f'<div style="color:#2A2A2A;font-size:0.72rem;">Automation Platform</div>'
+            f'</div>'
+
+            f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #101010;">'
+            f'<div style="width:7px;height:7px;border-radius:50%;background:{dot_c};flex-shrink:0;'
+            f'box-shadow:0 0 5px {dot_c}44;"></div>'
+            f'<span style="color:#3A3A3A;font-size:0.78rem;font-weight:500;">{status_lbl}</span>'
+            f'</div>',
             unsafe_allow_html=True,
         )
 
-        if client:
+        if not api_ok:
             st.markdown(
-                '<div style="display:flex;align-items:center;gap:7px;margin-bottom:20px;">'
-                '<div style="width:6px;height:6px;border-radius:50%;background:#22C55E;flex-shrink:0;"></div>'
-                '<span style="color:#22C55E;font-size:0.78rem;font-weight:500;">API connected</span>'
-                '</div>',
-                unsafe_allow_html=True,
-            )
-        else:
-            st.markdown(
-                '<div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;">'
-                '<div style="width:6px;height:6px;border-radius:50%;background:#F59E0B;flex-shrink:0;"></div>'
-                '<span style="color:#F59E0B;font-size:0.78rem;font-weight:500;">API not configured</span>'
-                '</div>'
-                '<div style="color:#242424;font-size:0.73rem;line-height:1.65;margin-bottom:20px;'
-                'padding:10px 12px;background:#0A0A0A;border-radius:4px;border:1px solid rgba(255,255,255,0.05);">'
-                'Add <code style="color:#555;font-size:0.72rem;">ANTHROPIC_API_KEY</code> to Streamlit secrets. '
-                'All tabs work without it.'
-                '</div>',
+                '<div style="background:#0C0C0C;border:1px solid #141414;border-radius:6px;padding:12px 14px;margin-bottom:20px;">'
+                '<p style="color:#2E2E2E;font-size:0.75rem;line-height:1.7;margin:0;">'
+                'Add <code style="font-size:0.72rem;color:#3A3A3A;background:#141414;padding:1px 4px;border-radius:3px;">ANTHROPIC_API_KEY</code> '
+                'to Streamlit secrets. All tabs work in fallback mode without it.'
+                '</p></div>',
                 unsafe_allow_html=True,
             )
 
-        info = [("Model", "claude-haiku-4-5"), ("Framework", "Streamlit"), ("Charts", "Plotly")]
-        for lbl, val in info:
+        sidebar_info = [
+            ("Model", "claude-haiku-4-5"),
+            ("Fallback", "Template + Rule engine"),
+            ("Charts", "Plotly"),
+            ("Tabs", "3"),
+        ]
+        for label, val in sidebar_info:
             st.markdown(
-                f'<div style="display:flex;justify-content:space-between;align-items:center;'
-                f'padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04);">'
-                f'<span style="color:#242424;font-size:0.73rem;">{lbl}</span>'
-                f'<span style="color:#484848;font-size:0.73rem;font-weight:500;">{val}</span>'
+                f'<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #0E0E0E;">'
+                f'<span style="color:#222;font-size:0.75rem;">{label}</span>'
+                f'<span style="color:#3A3A3A;font-size:0.75rem;font-weight:500;">{val}</span>'
                 f'</div>',
                 unsafe_allow_html=True,
             )
 
         st.markdown(
-            '<div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.04);">'
-            '<div style="color:#3A3A3A;font-size:0.75rem;font-weight:600;margin-bottom:5px;">Ridhan Parvendhan</div>'
-            '<div style="color:#1E1E1E;font-size:0.72rem;line-height:1.6;">'
-            'All sample data is synthetic and for demonstration only.</div>'
+            '<div style="margin-top:28px;">'
+            '<div style="color:#1E1E1E;font-size:0.72rem;font-weight:600;margin-bottom:4px;">Ridhan Parvendhan</div>'
+            '<div style="color:#141414;font-size:0.68rem;line-height:1.6;">All sample data is synthetic and for demonstration only.</div>'
             '</div>',
             unsafe_allow_html=True,
         )
 
     # Page header
     st.markdown(
-        '<div style="padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:32px;">'
-        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">'
-        '<span style="color:#FF5E2C;font-size:0.95rem;font-weight:800;">◆</span>'
-        '<span style="color:#F5F5F5;font-size:1.45rem;font-weight:700;letter-spacing:-0.025em;">Marketing AI Platform</span>'
-        '</div>'
-        '<p style="margin:0;color:#3A3A3A;font-size:0.85rem;line-height:1.6;max-width:540px;">'
-        'AI-powered tools for ad creation, campaign analysis, and copy variant scoring.'
-        '</p>'
+        '<div style="margin-bottom:32px;">'
+        '<h1 style="color:#EDEDED;font-size:1.6rem;font-weight:700;letter-spacing:-0.025em;margin:0 0 4px;">Marketing AI Platform</h1>'
+        '<p style="color:#2E2E2E;font-size:0.875rem;margin:0;">Ad copy generation, campaign analytics, and variant scoring.</p>'
         '</div>',
         unsafe_allow_html=True,
     )
