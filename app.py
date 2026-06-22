@@ -58,22 +58,22 @@ def inject_css():
 
         # Tab bar - underline only, no pill/card
         ".stTabs [data-baseweb='tab-list'] { background: transparent !important; border: none !important; border-bottom: 1px solid #1E1E1E !important; border-radius: 0 !important; padding: 0 !important; gap: 0 !important; margin-bottom: 40px !important; }"
-        ".stTabs [data-baseweb='tab'] { background: transparent !important; border-radius: 0 !important; color: #606060 !important; font-size: 0.84rem !important; font-weight: 400 !important; padding: 13px 0 !important; margin-right: 30px !important; border-bottom: 2px solid transparent !important; margin-bottom: -1px !important; letter-spacing: 0.01em !important; transition: color 0.12s !important; }"
-        ".stTabs [data-baseweb='tab']:hover { color: #999 !important; }"
+        ".stTabs [data-baseweb='tab'] { background: transparent !important; border-radius: 0 !important; color: #888 !important; font-size: 0.84rem !important; font-weight: 400 !important; padding: 13px 0 !important; margin-right: 30px !important; border-bottom: 2px solid transparent !important; margin-bottom: -1px !important; letter-spacing: 0.01em !important; transition: color 0.12s !important; }"
+        ".stTabs [data-baseweb='tab']:hover { color: #CCC !important; }"
         ".stTabs [aria-selected='true'] { color: #EFEFEF !important; font-weight: 600 !important; border-bottom-color: #FF6B3B !important; background: transparent !important; }"
         ".stTabs [data-baseweb='tab-highlight'], .stTabs [data-baseweb='tab-border'] { display: none !important; }"
 
         # Inputs
         ".stTextInput input, .stTextArea textarea { background: #0E0E0E !important; border: 1px solid #222 !important; border-radius: 6px !important; color: #E8E8E8 !important; font-size: 0.875rem !important; caret-color: #FF6B3B !important; transition: border-color 0.12s !important; padding: 9px 12px !important; }"
         ".stTextInput input:focus, .stTextArea textarea:focus { border-color: rgba(255,107,59,0.5) !important; box-shadow: 0 0 0 3px rgba(255,107,59,0.06) !important; }"
-        ".stTextInput input::placeholder, .stTextArea textarea::placeholder { color: #383838 !important; }"
-        ".stTextInput label, .stTextArea label { color: #666 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; margin-bottom: 6px !important; }"
+        ".stTextInput input::placeholder, .stTextArea textarea::placeholder { color: #444 !important; }"
+        ".stTextInput label, .stTextArea label { color: #A0A0A0 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; margin-bottom: 6px !important; }"
 
         # Selectbox
         ".stSelectbox [data-baseweb='select'] > div:first-child { background: #0E0E0E !important; border: 1px solid #222 !important; border-radius: 6px !important; transition: border-color 0.12s !important; }"
         ".stSelectbox [data-baseweb='select'] > div:first-child:hover { border-color: #333 !important; }"
-        ".stSelectbox label { color: #666 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; margin-bottom: 6px !important; }"
-        ".stSelectbox svg { color: #666 !important; }"
+        ".stSelectbox label { color: #A0A0A0 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; margin-bottom: 6px !important; }"
+        ".stSelectbox svg { color: #888 !important; }"
 
         # Buttons
         ".stButton > button { border-radius: 6px !important; font-size: 0.875rem !important; font-weight: 500 !important; letter-spacing: 0.01em !important; transition: all 0.1s !important; height: 38px !important; }"
@@ -83,11 +83,11 @@ def inject_css():
         ".stButton > button[kind='secondary']:hover { border-color: #333 !important; color: #AAA !important; }"
 
         # Radio
-        ".stRadio label span { color: #888 !important; font-size: 0.84rem !important; }"
+        ".stRadio label span { color: #AAAAAA !important; font-size: 0.84rem !important; }"
         ".stRadio > div { gap: 4px !important; }"
 
         # Slider
-        ".stSlider label { color: #666 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; }"
+        ".stSlider label { color: #A0A0A0 !important; font-size: 0.68rem !important; font-weight: 600 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; }"
         ".stSlider [data-testid='stThumbValue'] { color: #FF6B3B !important; font-weight: 600 !important; }"
         ".stSlider [data-testid='stTickBar'] { color: #444 !important; }"
 
@@ -99,7 +99,7 @@ def inject_css():
 
         # Metric
         "[data-testid='stMetric'] { background: transparent !important; border: none !important; padding: 0 !important; }"
-        "[data-testid='stMetricLabel'] p { color: #666 !important; font-size: 0.67rem !important; font-weight: 600 !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; }"
+        "[data-testid='stMetricLabel'] p { color: #A0A0A0 !important; font-size: 0.67rem !important; font-weight: 600 !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; }"
         "[data-testid='stMetricValue'] { color: #E2E2E2 !important; font-size: 1.5rem !important; font-weight: 700 !important; letter-spacing: -0.025em !important; font-variant-numeric: tabular-nums !important; }"
 
         # DataFrame
@@ -121,10 +121,10 @@ def inject_css():
         "::-webkit-scrollbar-thumb:hover { background: #333; }"
 
         # Utility classes
-        ".eyebrow { display: block; color: #666; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; }"
-        ".analysis-out p, .analysis-out li { color: #888; font-size: 0.875rem; line-height: 1.8; margin: 0 0 4px; }"
-        ".analysis-out strong { color: #C8C8C8; }"
-        ".analysis-out h2, .analysis-out h3 { color: #777; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin: 22px 0 10px; }"
+        ".eyebrow { display: block; color: #FF6B3B; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; }"
+        ".analysis-out p, .analysis-out li { color: #A8A8A8; font-size: 0.875rem; line-height: 1.8; margin: 0 0 4px; }"
+        ".analysis-out strong { color: #D8D8D8; }"
+        ".analysis-out h2, .analysis-out h3 { color: #FF6B3B; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin: 22px 0 10px; }"
     )
 
     components.html(
@@ -257,14 +257,14 @@ def render_ad_copy_tab():
 
     st.markdown(
         f'<div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">'
-        f'<span style="color:#555;font-size:0.78rem;font-weight:600;letter-spacing:0.06em;">SOURCE</span>'
+        f'<span style="color:#FF6B3B;font-size:0.78rem;font-weight:700;letter-spacing:0.08em;">SOURCE</span>'
         f'<span style="color:{source_color};font-size:0.78rem;font-weight:600;">{source_label}</span>'
-        f'<span style="color:#333;font-size:0.78rem;">|</span>'
-        f'<span style="color:#777;font-size:0.78rem;">Objective:</span>'
+        f'<span style="color:#444;font-size:0.78rem;">|</span>'
+        f'<span style="color:#A0A0A0;font-size:0.78rem;">Objective:</span>'
         f'<span style="color:{obj_color};font-size:0.78rem;font-weight:600;">{objective}</span>'
-        f'<span style="color:#333;font-size:0.78rem;">|</span>'
-        f'<span style="color:#777;font-size:0.78rem;">Tone:</span>'
-        f'<span style="color:#AAA;font-size:0.78rem;font-weight:500;">{tone}</span>'
+        f'<span style="color:#444;font-size:0.78rem;">|</span>'
+        f'<span style="color:#A0A0A0;font-size:0.78rem;">Tone:</span>'
+        f'<span style="color:#CCC;font-size:0.78rem;font-weight:500;">{tone}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -279,8 +279,8 @@ def render_ad_copy_tab():
         h_ok  = hlen <= 40
         pt_ok = plen <= 125
 
-        h_count_style  = f"color:{'#555' if h_ok else RED}"
-        pt_count_style = f"color:{'#555' if pt_ok else RED}"
+        h_count_style  = f"color:{'#888' if h_ok else RED}"
+        pt_count_style = f"color:{'#888' if pt_ok else RED}"
 
         num_label = f"0{idx + 1}"
 
@@ -290,7 +290,7 @@ def render_ad_copy_tab():
 
             # Left: number
             f'<div style="padding-top:2px;">'
-            f'<span style="color:#444;font-size:0.72rem;font-weight:700;font-variant-numeric:tabular-nums;">{num_label}</span>'
+            f'<span style="color:#666;font-size:0.72rem;font-weight:700;font-variant-numeric:tabular-nums;">{num_label}</span>'
             f'</div>'
 
             # Right: content
@@ -300,7 +300,7 @@ def render_ad_copy_tab():
             # Headline
             f'<div>'
             f'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;">'
-            f'<span style="color:#666;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Headline</span>'
+            f'<span style="color:#FF6B3B;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Headline</span>'
             f'<span style="{h_count_style};font-size:0.67rem;font-variant-numeric:tabular-nums;">{hlen}/40</span>'
             f'</div>'
             f'<div style="background:#0C0C0C;border:1px solid #171717;border-radius:5px;padding:10px 13px;'
@@ -310,7 +310,7 @@ def render_ad_copy_tab():
             # Primary text
             f'<div>'
             f'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;">'
-            f'<span style="color:#666;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Primary Text</span>'
+            f'<span style="color:#FF6B3B;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Primary Text</span>'
             f'<span style="{pt_count_style};font-size:0.67rem;font-variant-numeric:tabular-nums;">{plen}/125</span>'
             f'</div>'
             f'<div style="background:#0C0C0C;border:1px solid #171717;border-radius:5px;padding:10px 13px;'
@@ -320,7 +320,7 @@ def render_ad_copy_tab():
             # CTA
             f'<div>'
             f'<div style="margin-bottom:7px;">'
-            f'<span style="color:#666;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">CTA</span>'
+            f'<span style="color:#FF6B3B;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">CTA</span>'
             f'</div>'
             f'<button style="background:{obj_color};color:#fff;border:none;border-radius:6px;'
             f'padding:10px 18px;font-size:0.8rem;font-weight:600;white-space:nowrap;cursor:default;'
@@ -331,8 +331,8 @@ def render_ad_copy_tab():
 
             # Rationale
             f'<div style="margin-top:14px;padding-top:14px;border-top:1px solid #0F0F0F;">'
-            f'<span style="color:#666;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">WHY IT WORKS</span>'
-            f'<p style="color:#999;font-size:0.835rem;line-height:1.7;margin:6px 0 0;">{rat}</p>'
+            f'<span style="color:#FF6B3B;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">WHY IT WORKS</span>'
+            f'<p style="color:#A8A8A8;font-size:0.835rem;line-height:1.7;margin:6px 0 0;">{rat}</p>'
             f'</div>'
 
             f'</div>'
@@ -467,7 +467,7 @@ def render_performance_tab():
             st.dataframe(df, use_container_width=True)
         else:
             st.markdown(
-                '<p style="color:#777;font-size:0.84rem;">Expected columns: Campaign, Impressions, Clicks, Conversions, Spend ($), Reach, CTR (%), CPC ($), CPM ($), ROAS</p>',
+                '<p style="color:#A0A0A0;font-size:0.84rem;">Expected columns: Campaign, Impressions, Clicks, Conversions, Spend ($), Reach, CTR (%), CPC ($), CPM ($), ROAS</p>',
                 unsafe_allow_html=True,
             )
 
@@ -506,7 +506,7 @@ def render_performance_tab():
 
             col_w.markdown(
                 f'<div>'
-                f'<div style="color:#666;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;">{label}</div>'
+                f'<div style="color:#FF6B3B;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;">{label}</div>'
                 f'<div style="color:{val_color};font-size:1.55rem;font-weight:700;letter-spacing:-0.025em;font-variant-numeric:tabular-nums;line-height:1;">{fmt(val)}</div>'
                 f'</div>',
                 unsafe_allow_html=True,
@@ -520,7 +520,7 @@ def render_performance_tab():
     _eyebrow("Performance Breakdown")
     st.markdown(
         '<div style="display:flex;gap:16px;margin-bottom:14px;align-items:center;">'
-        f'<span style="color:#666;font-size:0.72rem;font-weight:600;">COLOR KEY</span>'
+        f'<span style="color:#FF6B3B;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;">COLOR KEY</span>'
         f'<span style="display:flex;align-items:center;gap:5px;color:{GREEN};font-size:0.72rem;font-weight:600;">'
         f'<span style="width:6px;height:6px;background:{GREEN};border-radius:50%;display:inline-block;"></span>Strong</span>'
         f'<span style="display:flex;align-items:center;gap:5px;color:{AMBER};font-size:0.72rem;font-weight:600;">'
@@ -586,7 +586,7 @@ def render_performance_tab():
 
         st.markdown(
             f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">'
-            f'<span style="color:#666;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;">POWERED BY</span>'
+            f'<span style="color:#FF6B3B;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;">POWERED BY</span>'
             f'{badge}</div>',
             unsafe_allow_html=True,
         )
@@ -649,7 +649,7 @@ def _score_bar_html(label, score, color):
     pct = int(score * 10)
     return (
         f'<div style="display:grid;grid-template-columns:90px 1fr 32px;gap:10px;align-items:center;margin-bottom:8px;">'
-        f'<span style="color:#777;font-size:0.72rem;font-weight:500;">{label}</span>'
+        f'<span style="color:#A0A0A0;font-size:0.72rem;font-weight:500;">{label}</span>'
         f'<div style="height:3px;background:#111;border-radius:2px;overflow:hidden;">'
         f'<div style="height:100%;width:{pct}%;background:{color};border-radius:2px;transition:width 0.4s;"></div>'
         f'</div>'
@@ -676,7 +676,7 @@ def render_ab_scorer_tab():
             f'<div style="font-size:1.1rem;margin-bottom:9px;">{icon}</div>'
             f'<div style="color:#B8B8B8;font-size:0.84rem;font-weight:600;margin-bottom:3px;">{dim}</div>'
             f'<div style="color:{ACCENT};font-size:0.67rem;font-weight:700;letter-spacing:0.06em;margin-bottom:6px;">{wt} weight</div>'
-            f'<div style="color:#777;font-size:0.72rem;line-height:1.5;">{desc}</div>'
+            f'<div style="color:#A0A0A0;font-size:0.72rem;line-height:1.5;">{desc}</div>'
             f'</div>',
             unsafe_allow_html=True,
         )
@@ -704,7 +704,7 @@ def render_ab_scorer_tab():
             f'<div style="width:26px;height:26px;border-radius:5px;background:{vc}18;'
             f'border:1px solid {vc}30;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
             f'<span style="color:{vc};font-size:0.7rem;font-weight:700;">{lbl}</span></div>'
-            f'<span style="color:#888;font-size:0.8rem;font-weight:500;">Variant {lbl}</span>'
+            f'<span style="color:#AAAAAA;font-size:0.8rem;font-weight:500;">Variant {lbl}</span>'
             f'</div>',
             unsafe_allow_html=True,
         )
@@ -787,11 +787,11 @@ def render_ab_scorer_tab():
 
             f'<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;">'
             f'<div style="display:flex;align-items:baseline;gap:14px;">'
-            f'<span style="color:#555;font-size:0.72rem;font-weight:700;font-variant-numeric:tabular-nums;">#{rank+1}</span>'
+            f'<span style="color:#888;font-size:0.72rem;font-weight:700;font-variant-numeric:tabular-nums;">#{rank+1}</span>'
             f'<span style="color:{"#E8E8E8" if is_winner else "#666"};font-size:0.875rem;font-weight:{"600" if is_winner else "400"};">{row["name"]}</span>'
             + (f'<span style="color:#FF6B3B;font-size:0.67rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;">RECOMMENDED</span>' if is_winner else '')
             + f'</div>'
-            f'<span style="color:{ov_color};font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;">{ov:.1f}<span style="font-size:0.75rem;color:#555;font-weight:500;">/10</span></span>'
+            f'<span style="color:{ov_color};font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;">{ov:.1f}<span style="font-size:0.75rem;color:#888;font-weight:500;">/10</span></span>'
             f'</div>'
 
             f'{bars_html}'
@@ -879,8 +879,8 @@ def render_ab_scorer_tab():
 
     st.markdown(
         f'<div style="border:1px solid #141414;border-radius:7px;padding:22px 24px;">'
-        f'<div style="color:#666;font-size:0.64rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;">Recommendation</div>'
-        f'<p style="color:#666;font-size:0.9rem;line-height:1.75;margin:0;">{rec}</p>'
+        f'<div style="color:#FF6B3B;font-size:0.64rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;">Recommendation</div>'
+        f'<p style="color:#A8A8A8;font-size:0.9rem;line-height:1.75;margin:0;">{rec}</p>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -901,13 +901,13 @@ def main():
         st.markdown(
             f'<div style="margin-bottom:24px;">'
             f'<div style="color:#D8D8D8;font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:2px;">Marketing AI</div>'
-            f'<div style="color:#666;font-size:0.72rem;">Automation Platform</div>'
+            f'<div style="color:#999;font-size:0.72rem;">Automation Platform</div>'
             f'</div>'
 
             f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #101010;">'
             f'<div style="width:7px;height:7px;border-radius:50%;background:{dot_c};flex-shrink:0;'
             f'box-shadow:0 0 5px {dot_c}44;"></div>'
-            f'<span style="color:#999;font-size:0.78rem;font-weight:500;">{status_lbl}</span>'
+            f'<span style="color:#C0C0C0;font-size:0.78rem;font-weight:500;">{status_lbl}</span>'
             f'</div>',
             unsafe_allow_html=True,
         )
@@ -915,8 +915,8 @@ def main():
         if not api_ok:
             st.markdown(
                 '<div style="background:#0C0C0C;border:1px solid #141414;border-radius:6px;padding:12px 14px;margin-bottom:20px;">'
-                '<p style="color:#888;font-size:0.75rem;line-height:1.7;margin:0;">'
-                'Add <code style="font-size:0.72rem;color:#AAA;background:#1A1A1A;padding:1px 4px;border-radius:3px;">ANTHROPIC_API_KEY</code> '
+                '<p style="color:#A0A0A0;font-size:0.75rem;line-height:1.7;margin:0;">'
+                'Add <code style="font-size:0.72rem;color:#CCC;background:#1A1A1A;padding:1px 4px;border-radius:3px;">ANTHROPIC_API_KEY</code> '
                 'to Streamlit secrets. All tabs work in fallback mode without it.'
                 '</p></div>',
                 unsafe_allow_html=True,
@@ -931,16 +931,16 @@ def main():
         for label, val in sidebar_info:
             st.markdown(
                 f'<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #0E0E0E;">'
-                f'<span style="color:#666;font-size:0.75rem;">{label}</span>'
-                f'<span style="color:#AAA;font-size:0.75rem;font-weight:500;">{val}</span>'
+                f'<span style="color:#888;font-size:0.75rem;">{label}</span>'
+                f'<span style="color:#D0D0D0;font-size:0.75rem;font-weight:500;">{val}</span>'
                 f'</div>',
                 unsafe_allow_html=True,
             )
 
         st.markdown(
             '<div style="margin-top:28px;">'
-            '<div style="color:#666;font-size:0.72rem;font-weight:600;margin-bottom:4px;">Ridhan Parvendhan</div>'
-            '<div style="color:#444;font-size:0.68rem;line-height:1.6;">All sample data is synthetic and for demonstration only.</div>'
+            '<div style="color:#999;font-size:0.72rem;font-weight:600;margin-bottom:4px;">Ridhan Parvendhan</div>'
+            '<div style="color:#666;font-size:0.68rem;line-height:1.6;">All sample data is synthetic and for demonstration only.</div>'
             '</div>',
             unsafe_allow_html=True,
         )
@@ -949,7 +949,7 @@ def main():
     st.markdown(
         '<div style="margin-bottom:32px;">'
         '<h1 style="color:#EDEDED;font-size:1.6rem;font-weight:700;letter-spacing:-0.025em;margin:0 0 4px;">Marketing AI Platform</h1>'
-        '<p style="color:#777;font-size:0.875rem;margin:0;">Ad copy generation, campaign analytics, and variant scoring.</p>'
+        '<p style="color:#A0A0A0;font-size:0.875rem;margin:0;">Ad copy generation, campaign analytics, and variant scoring.</p>'
         '</div>',
         unsafe_allow_html=True,
     )
