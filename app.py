@@ -658,7 +658,351 @@ def _score_bar_html(label, score, color):
     )
 
 
+def render_stat_ab_test():
+    """Statistical hypothesis testing: two-proportion z-test, t-test, sample size calculator."""
+    try:
+        import math
+        import numpy as np
+        from scipy import stats as sc
+        from scipy.stats import norm as _norm
+    except ImportError:
+        st.warning("Install scipy to enable statistical testing: `pip install scipy`")
+        return
+
+    ALPHA = 0.05
+
+    # ── shared render helpers ────────────────────────────────────────────────
+    def _pfmt(p):
+        return "< 0.001" if p < 0.001 else f"{p:.4f}"
+
+    def _kv(lbl, val):
+        return (
+            f'<div style="display:flex;justify-content:space-between;padding:7px 0;'
+            f'border-bottom:1px solid #111;">'
+            f'<span style="color:#888;font-size:0.78rem;">{lbl}</span>'
+            f'<span style="color:#D8D8D8;font-size:0.84rem;font-weight:600;'
+            f'font-variant-numeric:tabular-nums;">{val}</span></div>'
+        )
+
+    def _verdict(sig, headline, body, ci_lbl=None, ci_val=None):
+        c = GREEN if sig else AMBER
+        tag = "SIGNIFICANT" if sig else "NOT SIGNIFICANT"
+        html = (
+            f'<div style="border:1px solid {c}28;border-left:3px solid {c};border-radius:7px;'
+            f'padding:18px 20px;margin-top:14px;background:#0A0A0A;">'
+            f'<div style="color:{c};font-size:0.62rem;font-weight:700;letter-spacing:0.14em;'
+            f'text-transform:uppercase;margin-bottom:8px;">{tag}</div>'
+            f'<div style="color:#E0E0E0;font-size:0.9rem;font-weight:600;margin-bottom:8px;">{headline}</div>'
+            f'<p style="color:#A8A8A8;font-size:0.84rem;line-height:1.75;margin:0;">{body}</p>'
+        )
+        if ci_lbl:
+            html += (
+                f'<div style="margin-top:12px;padding-top:12px;border-top:1px solid #181818;">'
+                f'<span style="color:#FF6B3B;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;">'
+                f'{ci_lbl}</span>'
+                f'<span style="color:#CCC;font-size:0.84rem;margin-left:10px;">{ci_val}</span>'
+                f'</div>'
+            )
+        html += '</div>'
+        return html
+
+    # ════════════════════════════════════════════════════════════════════════
+    # 1. Two-proportion z-test
+    # ════════════════════════════════════════════════════════════════════════
+    _eyebrow("Two-Proportion Z-Test")
+    st.markdown(
+        '<p style="color:#A0A0A0;font-size:0.84rem;margin:0 0 20px;">'
+        'Compare click-through rates between a control and up to four variants. '
+        'For 3 or more variants, Bonferroni correction is applied automatically '
+        'to control the family-wise error rate.</p>',
+        unsafe_allow_html=True,
+    )
+
+    n_var  = st.radio("Total variants (including control)", [2, 3, 4, 5], horizontal=True, key="z_nv")
+    VLBLS  = ["Control (A)", "Variant B", "Variant C", "Variant D", "Variant E"]
+    VCLRS  = [ACCENT, "#6366F1", GREEN, AMBER, RED]
+
+    z_ps, z_ns = [], []
+    for i in range(n_var):
+        ca, cb = st.columns(2, gap="large")
+        with ca:
+            st.markdown(
+                f'<span style="color:{VCLRS[i]};font-size:0.65rem;font-weight:700;'
+                f'letter-spacing:0.1em;">{VLBLS[i].upper()} — CTR (%)</span>',
+                unsafe_allow_html=True,
+            )
+            p_i = st.number_input(
+                f"CTR {VLBLS[i]}", min_value=0.001, max_value=100.0,
+                value=round(2.5 + i * 0.4, 3), step=0.001, format="%.3f",
+                key=f"z_p_{i}", label_visibility="collapsed",
+            )
+            z_ps.append(p_i / 100)
+        with cb:
+            st.markdown(
+                f'<span style="color:{VCLRS[i]};font-size:0.65rem;font-weight:700;'
+                f'letter-spacing:0.1em;">{VLBLS[i].upper()} — IMPRESSIONS</span>',
+                unsafe_allow_html=True,
+            )
+            n_i = st.number_input(
+                f"N {VLBLS[i]}", min_value=100, value=10000, step=100,
+                key=f"z_n_{i}", label_visibility="collapsed",
+            )
+            z_ns.append(n_i)
+
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+    if st.button("Run Z-Tests", type="primary", key="btn_ztest"):
+        n_comps   = n_var - 1
+        alpha_adj = ALPHA / n_comps if n_comps > 1 else ALPHA
+
+        if n_comps > 1:
+            st.markdown(
+                f'<div style="background:#0D0D0D;border:1px solid #1E1E1E;border-radius:6px;'
+                f'padding:10px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">'
+                f'<span style="color:#FF6B3B;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;">'
+                f'BONFERRONI</span>'
+                f'<span style="color:#A0A0A0;font-size:0.82rem;">'
+                f'{n_comps} comparisons → adjusted alpha: {ALPHA} / {n_comps} = '
+                f'<strong style="color:#E0E0E0;">{alpha_adj:.4f}</strong></span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+        ctrl_p, ctrl_n = z_ps[0], z_ns[0]
+        for i in range(1, n_var):
+            vp, vn    = z_ps[i], z_ns[i]
+            c_conv    = round(ctrl_p * ctrl_n)
+            v_conv    = round(vp * vn)
+            if c_conv < 5 or v_conv < 5:
+                st.warning(
+                    f"{VLBLS[i]}: fewer than 5 conversions in a group — z-test unreliable. "
+                    "Increase impressions or CTR."
+                )
+                continue
+            try:
+                z_stat, p_val = sc.proportions_ztest(
+                    [c_conv, v_conv], [ctrl_n, vn], alternative="two-sided"
+                )
+                diff = vp - ctrl_p
+                se_u = math.sqrt(ctrl_p*(1-ctrl_p)/ctrl_n + vp*(1-vp)/vn)
+                ci   = (diff - 1.96*se_u, diff + 1.96*se_u)
+                rel  = diff / ctrl_p * 100 if ctrl_p else 0
+                sig  = p_val <= alpha_adj
+                dirn = "higher" if vp > ctrl_p else "lower"
+
+                st.markdown(
+                    f'<div style="border:1px solid #1A1A1A;border-radius:7px;padding:14px 18px;'
+                    f'margin-top:14px;background:#0A0A0A;">'
+                    f'<div style="color:#A0A0A0;font-size:0.72rem;font-weight:600;margin-bottom:10px;">'
+                    f'Control vs {VLBLS[i]}</div>'
+                    + _kv("Z-Statistic", f"{z_stat:+.4f}")
+                    + _kv("P-Value", _pfmt(p_val))
+                    + _kv("Alpha" + (" (Bonferroni-adjusted)" if n_comps > 1 else ""), f"{alpha_adj:.4f}")
+                    + _kv("Relative lift", f"{rel:+.2f}%")
+                    + _kv("95% CI (absolute difference)", f"[{ci[0]*100:+.3f}%, {ci[1]*100:+.3f}%]")
+                    + '</div>',
+                    unsafe_allow_html=True,
+                )
+                if sig:
+                    body = (
+                        f"Variant {VLBLS[i].split()[-1]} CTR ({vp*100:.3f}%) is {abs(rel):.1f}% {dirn} "
+                        f"than control ({ctrl_p*100:.3f}%) and is statistically significant at the "
+                        f"adjusted threshold of {alpha_adj:.4f} (p = {_pfmt(p_val)}). "
+                        f"The 95% CI does not cross zero, confirming the effect is real."
+                    )
+                else:
+                    body = (
+                        f"The observed {abs(rel):.1f}% {'lift' if rel > 0 else 'drop'} "
+                        f"(control {ctrl_p*100:.3f}% vs variant {vp*100:.3f}%) is not statistically "
+                        f"significant (p = {_pfmt(p_val)}, threshold = {alpha_adj:.4f}). "
+                        f"The 95% CI crosses zero. Run the test longer or increase the sample size "
+                        f"before drawing conclusions."
+                    )
+                head = f"{'Reject H₀' if sig else 'Fail to reject H₀'} — {VLBLS[i]}"
+                st.markdown(_verdict(sig, head, body), unsafe_allow_html=True)
+            except Exception as exc:
+                st.error(f"Z-test failed for {VLBLS[i]}: {exc}")
+
+    # ════════════════════════════════════════════════════════════════════════
+    # 2. Independent t-test (continuous metrics)
+    # ════════════════════════════════════════════════════════════════════════
+    _sep()
+    _eyebrow("Independent T-Test (Continuous Metrics)")
+    st.markdown(
+        '<p style="color:#A0A0A0;font-size:0.84rem;margin:0 0 20px;">'
+        "Compare means for continuous metrics such as ROAS, revenue per user, or AOV. "
+        "Paste comma-separated values for each group. "
+        "Welch’s t-test is used, so equal variances are not assumed.</p>",
+        unsafe_allow_html=True,
+    )
+    tc1, tc2 = st.columns(2, gap="large")
+    with tc1:
+        st.markdown(
+            f'<span style="color:{ACCENT};font-size:0.65rem;font-weight:700;letter-spacing:0.1em;">'
+            f'CONTROL VALUES</span>', unsafe_allow_html=True,
+        )
+        ctrl_raw = st.text_area(
+            "Control", value="2.1, 3.5, 1.8, 2.9, 2.4, 3.1, 1.9, 2.7",
+            height=90, key="t_ctrl", label_visibility="collapsed",
+            placeholder="e.g. 2.1, 3.5, 1.8, 2.9",
+        )
+    with tc2:
+        st.markdown(
+            '<span style="color:#6366F1;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;">'
+            'VARIANT VALUES</span>', unsafe_allow_html=True,
+        )
+        var_raw = st.text_area(
+            "Variant", value="3.2, 4.1, 2.8, 3.9, 3.5, 4.3, 2.9, 3.7",
+            height=90, key="t_var", label_visibility="collapsed",
+            placeholder="e.g. 3.2, 4.1, 2.8, 3.9",
+        )
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+    if st.button("Run T-Test", type="primary", key="btn_ttest"):
+        try:
+            def _parse(s):
+                return [float(x) for x in re.split(r"[\s,;]+", s.strip()) if x]
+            a, b = np.array(_parse(ctrl_raw)), np.array(_parse(var_raw))
+            if len(a) < 2 or len(b) < 2:
+                st.error("Each group needs at least 2 values.")
+            else:
+                t_stat, p_val = sc.ttest_ind(a, b, equal_var=False)
+                m1, m2 = float(a.mean()), float(b.mean())
+                s1, s2 = float(a.std(ddof=1)), float(b.std(ddof=1))
+                n1, n2 = len(a), len(b)
+                df_ws  = (s1**2/n1 + s2**2/n2)**2 / (
+                    (s1**2/n1)**2/(n1-1) + (s2**2/n2)**2/(n2-1)
+                )
+                se_d   = math.sqrt(s1**2/n1 + s2**2/n2)
+                t_crit = sc.t.ppf(0.975, df=df_ws)
+                diff_m = m2 - m1
+                ci_m   = (diff_m - t_crit*se_d, diff_m + t_crit*se_d)
+                sig    = p_val <= ALPHA
+                rel    = diff_m / m1 * 100 if m1 else 0
+                dirn   = "higher" if m2 > m1 else "lower"
+
+                st.markdown(
+                    f'<div style="border:1px solid #1A1A1A;border-radius:7px;padding:14px 18px;'
+                    f'margin-top:14px;background:#0A0A0A;">'
+                    f'<div style="color:#A0A0A0;font-size:0.72rem;font-weight:600;margin-bottom:10px;">'
+                    f"Welch’s Independent T-Test</div>"
+                    + _kv("T-Statistic", f"{t_stat:+.4f}")
+                    + _kv("P-Value (two-tailed)", _pfmt(p_val))
+                    + _kv("Degrees of Freedom (Welch-Satterthwaite)", f"{df_ws:.1f}")
+                    + _kv("Control: n / mean / SD", f"{n1} / {m1:.4f} / {s1:.4f}")
+                    + _kv("Variant: n / mean / SD", f"{n2} / {m2:.4f} / {s2:.4f}")
+                    + _kv("95% CI (mean difference)", f"[{ci_m[0]:+.4f}, {ci_m[1]:+.4f}]")
+                    + '</div>',
+                    unsafe_allow_html=True,
+                )
+                if sig:
+                    body = (
+                        f"The variant mean ({m2:.4f}) is {abs(rel):.1f}% {dirn} than the control "
+                        f"mean ({m1:.4f}). This difference is statistically significant "
+                        f"(p = {_pfmt(p_val)}, df = {df_ws:.1f}). "
+                        f"The 95% CI [{ci_m[0]:+.4f}, {ci_m[1]:+.4f}] does not cross zero."
+                    )
+                else:
+                    body = (
+                        f"The observed difference (control {m1:.4f} vs variant {m2:.4f}, {rel:+.1f}%) "
+                        f"is not statistically significant (p = {_pfmt(p_val)}). "
+                        f"With n={n1} and n={n2}, there is insufficient evidence to conclude the "
+                        f"variant outperforms the control. Collect more observations before deciding."
+                    )
+                head = f"{'Reject H₀' if sig else 'Fail to reject H₀'} — mean diff {diff_m:+.4f}"
+                st.markdown(
+                    _verdict(sig, head, body,
+                             ci_lbl="95% CI FOR MEAN DIFFERENCE",
+                             ci_val=f"[{ci_m[0]:+.4f}, {ci_m[1]:+.4f}]"),
+                    unsafe_allow_html=True,
+                )
+        except (ValueError, ZeroDivisionError) as exc:
+            st.error(f"Parse error: ensure all values are numeric. ({exc})")
+
+    # ════════════════════════════════════════════════════════════════════════
+    # 3. Sample size calculator
+    # ════════════════════════════════════════════════════════════════════════
+    _sep()
+    _eyebrow("Sample Size Calculator")
+    st.markdown(
+        '<p style="color:#A0A0A0;font-size:0.84rem;margin:0 0 20px;">'
+        'Calculate the minimum observations per variant to detect a given effect with sufficient '
+        'power. Based on the two-proportion z-test power formula (Fleiss, 1981).</p>',
+        unsafe_allow_html=True,
+    )
+    sc1, sc2, sc3, sc4 = st.columns(4, gap="large")
+    with sc1:
+        base_pct = st.number_input("Baseline CTR (%)", min_value=0.01, max_value=99.0, value=2.5, step=0.01, format="%.2f", key="ss_base")
+    with sc2:
+        mde_pct = st.number_input(
+            "Min. Detectable Effect (%)", min_value=1.0, max_value=200.0, value=10.0,
+            step=0.5, format="%.1f", key="ss_mde",
+            help="Relative lift to detect. 10 means detect a 10% relative improvement in CTR.",
+        )
+    with sc3:
+        pow_v = st.slider("Power (1 − β)", min_value=0.70, max_value=0.99, value=0.80, step=0.01, key="ss_pow", format="%.2f")
+    with sc4:
+        alp_v = st.slider("Alpha (α)", min_value=0.01, max_value=0.20, value=0.05, step=0.005, key="ss_alp", format="%.3f")
+
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+    if st.button("Calculate Sample Size", type="primary", key="btn_ss"):
+        p1    = base_pct / 100
+        p2    = min(p1 * (1 + mde_pct / 100), 0.9999)
+        z_a   = _norm.ppf(1 - alp_v / 2)
+        z_b   = _norm.ppf(pow_v)
+        p_avg = (p1 + p2) / 2
+        n_f   = (
+            (z_a * math.sqrt(2 * p_avg * (1 - p_avg)) + z_b * math.sqrt(p1*(1-p1) + p2*(1-p2)))
+            / abs(p2 - p1)
+        ) ** 2
+        n_per   = math.ceil(n_f)
+        n_total = n_per * 2
+
+        st.markdown(
+            f'<div style="border:1px solid #1A1A1A;border-radius:7px;padding:14px 18px;'
+            f'margin-top:14px;background:#0A0A0A;">'
+            + _kv("Baseline CTR", f"{p1*100:.2f}%")
+            + _kv("Variant CTR (baseline + MDE)", f"{p2*100:.4f}%")
+            + _kv("Absolute difference", f"{(p2-p1)*100:.4f} pp")
+            + _kv("Statistical power", f"{pow_v:.0%}")
+            + _kv("Significance level (α)", f"{alp_v:.3f}")
+            + _kv("Required n per variant", f"{n_per:,}")
+            + _kv("Total n (both variants)", f"{n_total:,}")
+            + '</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<div style="border:1px solid {ACCENT}28;border-left:3px solid {ACCENT};'
+            f'border-radius:7px;padding:20px 24px;margin-top:14px;background:#0A0A0A;">'
+            f'<div style="color:#FF6B3B;font-size:0.62rem;font-weight:700;letter-spacing:0.14em;'
+            f'text-transform:uppercase;margin-bottom:10px;">Result</div>'
+            f'<div style="color:#EDEDED;font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums;'
+            f'letter-spacing:-0.03em;line-height:1;margin-bottom:10px;">{n_per:,}'
+            f'<span style="font-size:0.9rem;color:#888;font-weight:400;margin-left:8px;">per variant</span></div>'
+            f'<p style="color:#A8A8A8;font-size:0.84rem;line-height:1.75;margin:0;">'
+            f'To detect a {mde_pct:.0f}% relative lift in CTR (from {p1*100:.2f}% to {p2*100:.4f}%) '
+            f'with {pow_v:.0%} power at α = {alp_v:.3f}, you need at least '
+            f'<strong style="color:#E0E0E0;">{n_per:,} observations per variant</strong> '
+            f'({n_total:,} total). Running the experiment with fewer observations risks a Type II '
+            f'error: failing to detect a real effect and potentially shipping an inferior variant.'
+            f'</p></div>',
+            unsafe_allow_html=True,
+        )
+
+
 def render_ab_scorer_tab():
+    # ── Statistical A/B Test ─────────────────────────────────────────────────
+    render_stat_ab_test()
+
+    _sep()
+
+    # ── Copy Quality Scorer (NLP) ────────────────────────────────────────────
+    _eyebrow("Copy Quality Scorer")
+    st.markdown(
+        '<p style="color:#A0A0A0;font-size:0.84rem;margin:0 0 20px;">'
+        'Rule-based NLP analysis across four dimensions: Clarity, Relevance, Urgency, and CTA '
+        'Strength. Enter headline and body copy for each variant to get a weighted score out of 10.</p>',
+        unsafe_allow_html=True,
+    )
+
     # Scoring criteria cards
     criteria = [
         ("💡", "Clarity", "30%", "Headline length, body structure, readability"),
